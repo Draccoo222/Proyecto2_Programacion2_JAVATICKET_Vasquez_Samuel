@@ -4,6 +4,7 @@
  */
 package proyecto1_programacion2_javaticket_vasquez_samuel;
 import javax.swing.*;
+import java.awt.Component.*;
 import java.awt.*;
 import java.awt.event.*;
 /**
@@ -12,12 +13,16 @@ import java.awt.event.*;
  */
 public class main extends JFrame {
     public main(){
-        setSize(500, 320);
+        
+        
+    }
+    
+    public void initComp(){
+        setSize(500, 500);
         setLayout(null);
         
         JLabel l = new JLabel("Hola Mundo");
         l.setBounds(210, 10, 500, 50);
-        
         add(l);
     
     }
