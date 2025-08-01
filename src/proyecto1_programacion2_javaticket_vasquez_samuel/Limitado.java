@@ -12,6 +12,7 @@ public class Limitado extends Usuario {
 
     public Limitado(int edad, String nombreCompleto, String userName, String passW) {
         super(edad, nombreCompleto, userName, passW);
+        setTipoUser(2);
     }
     
 }

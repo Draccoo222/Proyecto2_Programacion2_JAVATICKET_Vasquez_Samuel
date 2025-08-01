@@ -12,6 +12,10 @@ public class Admin extends Usuario {
     
     public Admin(int edad, String nombreCompleto, String userName, String passW){
         super(edad, nombreCompleto, userName, passW);
+        setTipoUser(0);
     }
+    
+    
+   
     
 }

@@ -12,12 +12,12 @@ public class UserManage {
     private ArrayList<Usuario> usuarios = new ArrayList<>();
     private Usuario userActual;
     private static UserManage instancia;
+    private boolean yaExiste = false;
     
     
-    public UserManage getInstance(){
+    public static UserManage getInstance(){
         if(instancia == null){
            instancia = new UserManage();
-           usuarios.add(new Admin(20, "ADMIN", "ADMINISTRADOR", "supersecreto"));
         }
         return instancia; 
     }
@@ -31,10 +31,10 @@ public class UserManage {
         return null;
     }
     
-    public boolean logIn(String userName){
+    public boolean logIn(String userName, String pass){
         if(buscarUsuario(userName) != null){
             for (Usuario u: usuarios){
-                if(u.getUserName().equals(userName)){
+                if(u.getUserName().equals(userName) && u.getPassW().equals(pass)){
                     userActual = u;
                     return true;
                 }   
@@ -51,6 +51,25 @@ public class UserManage {
         }
         return false;
     }
+    
+    public boolean confirmarContra(String pass){
+        return pass.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.\\d)(?=.*[^a-zA-Z\\d]).{8,}$");
+    }
+    
+    public void addAdmin(){
+        if(!yaExiste){
+            usuarios.add(new Admin(1, "Administrador", "Admin", "supersecreto"));
+            yaExiste = true;
+        }
+    }
+    
+    public String checkUser(){
+        if(userActual != null){
+           return userActual.getTipoUser();
+        }
+        return "nulo";
+    }
+    
     
     
     

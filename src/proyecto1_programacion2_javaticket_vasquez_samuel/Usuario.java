@@ -14,6 +14,8 @@ public class Usuario {
     private String userName;
     private String passW;
     
+    private String type;
+    
     private ArrayList<Evento> eventosCreados = new ArrayList<>();
     
     public Usuario(int edad, String nombreCompleto, String userName, String passW){
@@ -21,8 +23,6 @@ public class Usuario {
         this.nombreCompleto = nombreCompleto;
         this.userName = userName;
         this.passW = passW;
-        
-        
     }
 
     public int getEdad() {
@@ -55,6 +55,26 @@ public class Usuario {
 
     public void setPassW(String passW) {
         this.passW = passW;
+    }
+    
+    public void setTipoUser(int caso){
+        switch(caso){
+            case 0:
+                type = "admin";
+                break;
+            case 1:
+                type = "contenidos";
+                break;
+            case 2:
+                type = "limitado";
+                break;   
+            default:
+                type = "nulo";   
+        }
+    }
+    
+    public String getTipoUser(){
+        return type;
     }
    
 

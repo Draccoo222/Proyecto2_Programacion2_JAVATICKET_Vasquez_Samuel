@@ -11,6 +11,7 @@ package proyecto1_programacion2_javaticket_vasquez_samuel;
 public class Contenidos extends Usuario{
     public Contenidos(int edad, String nombreCompleto, String userName, String passW) {
         super(edad, nombreCompleto, userName, passW);
+        setTipoUser(1);
     }
     
 }
