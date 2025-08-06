@@ -44,6 +44,24 @@ public class UserManage {
         return false;
     }
     
+    public boolean crearUser(String type, int edad, String nombreCompleto, String userName, String passW){
+        if(buscarUsuario(userName) == null && confirmarContra(passW)){
+            switch(type){
+                case "admin":
+                    usuarios.add(new Admin(edad, nombreCompleto, userName, passW));
+                break;
+                case "contenidos":
+                    usuarios.add(new Contenidos(edad, nombreCompleto, userName, passW));
+                break;
+                case "limitados":
+                    usuarios.add(new Limitado(edad, nombreCompleto, userName, passW));
+                break;
+            }
+            return true;
+        }
+        return false;
+    }
+    
     public boolean signIn(int edad, String nombreCompleto, String userName, String passW){
         if(buscarUsuario(userName) == null){
             usuarios.add(new Limitado(edad, nombreCompleto, userName, passW));
@@ -53,7 +71,7 @@ public class UserManage {
     }
     
     public boolean confirmarContra(String pass){
-        return pass.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.\\d)(?=.*[^a-zA-Z\\d]).{8,}$");
+        return pass.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{5,}$");
     }
     
     public void addAdmin(){
@@ -63,6 +81,17 @@ public class UserManage {
         }
     }
     
+    public String getUserActualName(){
+        if(userActual != null){
+            return userActual.getUserName();
+        }
+        return "nulo";
+    }
+    
+    public Usuario getUserActual(){
+        return userActual;  
+    }
+    
     public String checkUser(){
         if(userActual != null){
            return userActual.getTipoUser();
@@ -70,6 +99,21 @@ public class UserManage {
         return "nulo";
     }
     
+    public int cantUsers(){
+        return usuarios.size();
+    
+    }
+    
+    public void cerrarSesion(){
+        userActual = null;
+    }
+    
+    public String listaUsers(int integer){
+        if(integer < 0){
+          return "";
+        }
+        return (integer + ": " + usuarios.get(integer).toString() + "\n") + listaUsers(integer - 1);
+    }
     
     
     

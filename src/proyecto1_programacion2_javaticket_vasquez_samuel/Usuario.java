@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  * @author unwir
  */
-public class Usuario {
+abstract public class Usuario {
     private int edad;
     private String nombreCompleto;
     private String userName;
@@ -76,6 +76,17 @@ public class Usuario {
     public String getTipoUser(){
         return type;
     }
-   
+    
+  
+    
+    @Override
+    public String toString(){
+        return "Nombre: " + getNombreCompleto() +
+               " Usuario: " + getUserName() +
+               " Edad: " + getEdad() +
+               " Tipo: " + getTipoUser();
+    
+    }
+ 
 
 }
