@@ -62,6 +62,25 @@ public class UserManage {
         return false;
     }
     
+    public boolean insert(int integer, String type, int edad, String nombreCompleto, String userName, String passW){
+        if(buscarUsuario(userName) == null && confirmarContra(passW)){
+            switch(type){
+                case "admin":
+                    usuarios.add(integer, new Admin(edad, nombreCompleto, userName, passW));
+                break;
+                case "contenidos":
+                    usuarios.add(integer, new Contenidos(edad, nombreCompleto, userName, passW));
+                break;
+                case "limitados":
+                    usuarios.add(integer, new Limitado(edad, nombreCompleto, userName, passW));
+                break;
+            }
+            return true;
+        }
+        return false;
+    
+    }
+    
     public boolean signIn(int edad, String nombreCompleto, String userName, String passW){
         if(buscarUsuario(userName) == null){
             usuarios.add(new Limitado(edad, nombreCompleto, userName, passW));
@@ -103,6 +122,10 @@ public class UserManage {
         return usuarios.size();
     
     }
+
+    public ArrayList<Usuario> getUsuarios() {
+        return usuarios;
+    }
     
     public void cerrarSesion(){
         userActual = null;
@@ -112,7 +135,7 @@ public class UserManage {
         if(integer < 0){
           return "";
         }
-        return (integer + ": " + usuarios.get(integer).toString() + "\n") + listaUsers(integer - 1);
+        return (integer + ": " + usuarios.get(integer).infoUser() + "\n") + listaUsers(integer - 1);
     }
     
     

@@ -77,16 +77,22 @@ abstract public class Usuario {
         return type;
     }
     
-  
     
-    @Override
-    public String toString(){
-        return "Nombre: " + getNombreCompleto() +
+    public String infoUser(){
+           return "Nombre: " + getNombreCompleto() +
                " Usuario: " + getUserName() +
                " Edad: " + getEdad() +
-               " Tipo: " + getTipoUser();
+              " Tipo: " + getTipoUser();
+    }
+   
+  
+    @Override
+    public String toString(){
+        return //"Nombre: " + getNombreCompleto() +
+              /* " Usuario: " + */getUserName()
+               //" Edad: " + getEdad() +
+              /*" Tipo: " + getTipoUser()*/;
     
     }
- 
 
 }
