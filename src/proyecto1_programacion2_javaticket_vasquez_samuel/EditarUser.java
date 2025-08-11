@@ -131,7 +131,7 @@ public class EditarUser extends JFrame {
         
         for(Usuario u: users){
             if(!u.getNombreCompleto().equals("Administrador")){
-            ola.addItem(u);
+                ola.addItem(u);
             }
         }
         
@@ -169,49 +169,54 @@ public class EditarUser extends JFrame {
         
     }
     
-    private void creacion(){
-        int edad = Integer.parseInt(eD.getText());
+    private void creacion(){   
+        try{
+            int edad;
 
+            String tipo = (String) type.getSelectedItem();
+            String nombreC = nombreComp.getText().trim();
+            String pass = passW.getText().trim();
+            String userN = uName.getText().trim();
+            Usuario userSelect = (Usuario) ola.getSelectedItem();
+            int index = uMan.getUsuarios().indexOf(userSelect);
+
+
+             if(nombreComp.getText().trim().isEmpty()){
+                nombreC = userSelect.getNombreCompleto();
+             }  
+             if(uName.getText().trim().isEmpty()){
+                userN = userSelect.getUserName();
+             }
+             if(passW.getText().trim().isEmpty()){
+                pass = userSelect.getPassW();
+             }  
+             if(eD.getText().trim().isEmpty()){
+                edad = userSelect.getEdad();
+             }else{
+                edad = Integer.parseInt(eD.getText());
+             }
+             if(type.getSelectedItem() == null){
+                 tipo = userSelect.getTipoUser();
+             }
+
+
+             if(uMan.confirmarContra(pass)){
+                uMan.getUsuarios().remove(userSelect);
+                uMan.insert(index, tipo, edad, nombreC, userN, pass);
+                JOptionPane.showMessageDialog(null, "Usuario editado con exito!");
+                salir();
+                System.out.println(uMan.listaUsers(uMan.cantUsers() - 1));
+            }else{
+                JOptionPane.showMessageDialog(null, "Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
+                        + "en la contraseña");
+             }
+        }catch(Exception e){
+            System.out.println("ERROR XD");
         
-        String tipo = (String) type.getSelectedItem();
-        String nombreC = nombreComp.getText().trim();
-        String pass = passW.getText().trim();
-        String userN = uName.getText().trim();
-        Usuario userSelect = (Usuario) ola.getSelectedItem();
-        int index = uMan.getUsuarios().indexOf(userSelect);
-        
-        
-         if(nombreComp.getText().trim().isEmpty()){
-            nombreC = userSelect.getNombreCompleto();
-         }  
-         if(uName.getText().trim().isEmpty()){
-            userN = userSelect.getUserName();
-         }
-         if(passW.getText().trim().isEmpty()){
-            pass = userSelect.getPassW();
-         }  
-         if(eD.getText().trim().isEmpty()){
-            edad = userSelect.getEdad();
-         }
-         if(type.getSelectedItem() == null){
-             tipo = userSelect.getTipoUser();
-         }
-         
-  
-         if(uMan.confirmarContra(pass)){
-            uMan.getUsuarios().remove(userSelect);
-            uMan.insert(index, tipo, edad, nombreC, userN, pass);
-            JOptionPane.showMessageDialog(null, "Usuario editado con exito!");
-            salir();
-            System.out.println(uMan.listaUsers(uMan.cantUsers() - 1));
-        }else{
-            JOptionPane.showMessageDialog(null, "Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
-                    + "en la contraseña");
-         }
+        }
     }
     
-    
-    
+   
     private void salir(){
         this.dispose();
         MenuPrincipal menu = new MenuPrincipal();

@@ -15,20 +15,20 @@ public class EventoDeportivo extends Evento {
     private String equipoA;
     private String equipoB;
     private ArrayList<String> integrantes;
+    private Enumeraciones.Deporte tipo;
 
-    
-    
-        
-
-    public EventoDeportivo(int codigo, int cantGente, String nombre, String descripcion, Calendar fecha) {
+ 
+    public EventoDeportivo(int codigo, int cantGente, String nombre, String descripcion, Calendar fecha, Enumeraciones.Deporte tipo) {
         super(codigo, cantGente, nombre, descripcion, fecha);
         integrantes = new ArrayList<>();
+        this.tipo = tipo;
     }
 
     
     String getTypeEvent() {
        return "deportivo";
     }
+
 
     public String getEquipoA() {
         return equipoA;
