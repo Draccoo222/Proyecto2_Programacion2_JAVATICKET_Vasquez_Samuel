@@ -4,6 +4,7 @@
  */
 package proyecto1_programacion2_javaticket_vasquez_samuel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -12,16 +13,26 @@ import java.util.Calendar;
  */
 public class EventoMusical extends Evento {
     private Enumeraciones.Musica tipo;
+    ArrayList<String> integrantes;
     
     
     
     public EventoMusical(int codigo,String nombre, String descripcion, Calendar fecha, double montoRenta, int cantGente, Enumeraciones.Musica tipo ) {
         super(codigo, nombre, descripcion, fecha, montoRenta, cantGente);
         this.tipo = tipo;
+        integrantes = new ArrayList<>();
     }
     
     public String getTypeEvent(){
         return "musical";
+    }
+
+    public ArrayList<String> getIntegrantes() {
+        return integrantes;
+    }
+
+    public void setIntegrantes(ArrayList<String> integrantes) {
+        this.integrantes = integrantes;
     }
     
     
@@ -29,6 +40,9 @@ public class EventoMusical extends Evento {
         return tipo.name();
     }
 
+    public String getBonus(){
+        return tipo.toString();
+    }
    
     @Override
     public String toString() {

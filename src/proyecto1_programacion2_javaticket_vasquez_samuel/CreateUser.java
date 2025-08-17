@@ -175,11 +175,5 @@ public class CreateUser extends JFrame {
         MenuPrincipal menu = new MenuPrincipal();
         menu.setVisible(true);
     }
-    
-    public static void main(String[] args){
-        new CreateUser().setVisible(true);
-    
-    }
 
-    
 }

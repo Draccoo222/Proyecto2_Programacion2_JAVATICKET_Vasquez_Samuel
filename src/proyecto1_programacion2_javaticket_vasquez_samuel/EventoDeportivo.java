@@ -32,8 +32,8 @@ public class EventoDeportivo extends Evento {
        return "deportivo";
     }
     
-    public String getOpcional(){
-        return tipo.name();
+    public Enumeraciones.Deporte getOpcional(){
+        return tipo;
     }
     
     public String getEquipoA() {
@@ -50,6 +50,18 @@ public class EventoDeportivo extends Evento {
     
      public ArrayList<String> getIntegrantesB() {
         return integrantesB;
+    }
+
+    public void setIntegrantesA(ArrayList<String> integrantesA) {
+        this.integrantesA = integrantesA;
+    }
+
+    public void setIntegrantesB(ArrayList<String> integrantesB) {
+        this.integrantesB = integrantesB;
+    }
+     
+    public String getBonus(){
+        return tipo.toString();
     }
 
     

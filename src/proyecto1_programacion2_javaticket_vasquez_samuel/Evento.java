@@ -80,6 +80,8 @@ public abstract class Evento {
     public double getPrecio() {
         return montoRenta;
     }
+    
+    abstract public String getBonus();
 
     @Override
     public String toString() {

@@ -27,6 +27,10 @@ public class EventoReligioso extends Evento {
         cantConvertidos = cant; 
     }
     
+    public String getBonus(){
+        return "nulo";
+    }
+    
      @Override
     public String toString() {
         return super.toString();
