@@ -16,13 +16,14 @@ abstract public class Usuario {
     
     private String type;
     
-    private ArrayList<Evento> eventosCreados = new ArrayList<>();
+    private ArrayList<Evento> eventosCreados;
     
     public Usuario(int edad, String nombreCompleto, String userName, String passW){
         this.edad = edad;
         this.nombreCompleto = nombreCompleto;
         this.userName = userName;
         this.passW = passW;
+        eventosCreados = new ArrayList<>();
     }
 
     public int getEdad() {
@@ -44,6 +45,7 @@ abstract public class Usuario {
     public ArrayList<Evento> getEventosCreados() {
         return eventosCreados;
     }
+    
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
@@ -73,6 +75,16 @@ abstract public class Usuario {
         }
     }
     
+    public Evento buscarEvento(int codigo, int indice){
+        if(indice >= eventosCreados.size()){
+            return null;
+        }
+        if(eventosCreados.get(indice).getCodigo() == codigo){
+            return eventosCreados.get(indice);
+        }
+        return buscarEvento(codigo, indice + 1);
+    }
+    
     public String getTipoUser(){
         return type;
     }
@@ -88,11 +100,7 @@ abstract public class Usuario {
   
     @Override
     public String toString(){
-        return //"Nombre: " + getNombreCompleto() +
-              /* " Usuario: " + */getUserName()
-               //" Edad: " + getEdad() +
-              /*" Tipo: " + getTipoUser()*/;
-    
+        return getUserName();
     }
 
 }

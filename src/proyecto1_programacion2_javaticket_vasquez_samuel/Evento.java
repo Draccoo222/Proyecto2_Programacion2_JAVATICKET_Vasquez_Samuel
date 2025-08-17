@@ -4,6 +4,7 @@
  */
 package proyecto1_programacion2_javaticket_vasquez_samuel;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -15,21 +16,33 @@ public abstract class Evento {
     private String nombre;
     private String descripcion;
     private Calendar fecha;
-    private double precio;
+    private double montoRenta;
     private int cantGente;
-    
+    protected boolean cancelado;
 
-    public Evento(int codigo, int cantGente, String nombre, String descripcion, Calendar fecha) {
+    public Evento(int codigo, String nombre, String descripcion, Calendar fecha, double montoRenta, int cantGente) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha = fecha;
+        this.montoRenta = montoRenta;
+        this.cantGente = cantGente;
+        cancelado = false;
     }
+  
     
     abstract String getTypeEvent();
     
-    public void setPrice(double precio){
-        this.precio = precio;
+    public void setPrice(double montoRenta){
+        this.montoRenta = montoRenta;
+    }
+
+    public double getMontoRenta() {
+        return montoRenta;
+    }
+
+    public int getCantGente() {
+        return cantGente;
     }
 
     public int getCodigo() {
@@ -65,11 +78,17 @@ public abstract class Evento {
     }
 
     public double getPrecio() {
-        return precio;
+        return montoRenta;
     }
 
-    public void setPrecio(int precio) {
-        this.precio = precio;
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return "codigo: " + codigo + "\n nombre: " + nombre + "\n descripcion: " + descripcion + "\n fecha: " + sdf.format(fecha.getTime()) + "\n montoRenta: " + montoRenta + "\n cantGente: " + cantGente + 
+                "\n Cancelado: " + ((cancelado) ? "Si" : "No");
     }
+   
+
+   
     
 }

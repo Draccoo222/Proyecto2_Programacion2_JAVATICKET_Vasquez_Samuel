@@ -8,8 +8,9 @@ import java.util.ArrayList;
  *
  * @author unwir
  */
-public class UserManage {
+public final class UserManage {
     private ArrayList<Usuario> usuarios = new ArrayList<>();
+    private ArrayList<Evento> eventosTotales = new ArrayList<>();
     private Usuario userActual;
     private static UserManage instancia;
     private boolean yaExiste = false;
@@ -18,6 +19,7 @@ public class UserManage {
     public static UserManage getInstance(){
         if(instancia == null){
            instancia = new UserManage();
+           
         }
         return instancia; 
     }
@@ -29,6 +31,10 @@ public class UserManage {
             }
         }
         return null;
+    }
+    
+    public ArrayList<Evento> getEventosTotales(){
+        return eventosTotales;
     }
     
     public boolean logIn(String userName, String pass){
@@ -100,6 +106,8 @@ public class UserManage {
         }
     }
     
+    
+    
     public String getUserActualName(){
         if(userActual != null){
             return userActual.getUserName();
@@ -138,6 +146,52 @@ public class UserManage {
         return (integer + ": " + usuarios.get(integer).infoUser() + "\n") + listaUsers(integer - 1);
     }
     
+     public Evento buscarEvento(int codigo, int indice){
+        if(indice >= eventosTotales.size()){
+            return null;
+        }
+        if(eventosTotales.get(indice).getCodigo() == codigo){
+            return eventosTotales.get(indice);
+        }
+        return buscarEvento(codigo, indice + 1);
+    }
+   
+    public String listaEventosCancelados(boolean cancelado, int integer){
+        if(integer >= eventosTotales.size()){
+          return "";
+        }
+        
+        if(eventosTotales.get(integer).cancelado == cancelado){
+         return (integer + ": " + eventosTotales.get(integer).toString() + "\n") + listaEventosCancelados(cancelado, integer + 1);
+        }
+        
+        return listaEventosCancelados(cancelado, integer + 1);
+    }
+    
+    public String listaEventosTotales(int integer){
+        if(integer >= eventosTotales.size()){
+          return "";
+        }
+
+         return (integer + ": " + eventosTotales.get(integer).toString() + "\n") + listaEventosTotales(integer + 1);
+       
+    }
+    
+     public String listaEventosEspecificos(String type, int integer) throws Exception{
+        if(!type.equals("religioso") || !type.equals("deportivo")  || !type.equals("musical")){
+             throw new Exception("ERROR, TIPO DE EVENTO INEXISTENTE");
+        }
+        if(integer >= eventosTotales.size()){
+          return "";
+        }
+        
+        if(eventosTotales.get(integer).getTypeEvent().equals(type)){
+         return (integer + ": " + eventosTotales.get(integer).toString() + "\n") + listaEventosEspecificos(type, integer + 1);
+        }
+        
+        return listaEventosEspecificos(type, integer + 1);
+    }
+     
     
     
 }

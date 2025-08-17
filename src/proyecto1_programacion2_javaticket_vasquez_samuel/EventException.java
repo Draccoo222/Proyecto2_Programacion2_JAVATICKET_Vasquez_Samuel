@@ -4,21 +4,15 @@
  */
 package proyecto1_programacion2_javaticket_vasquez_samuel;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author unwir
  */
-public class Admin extends Usuario {
-    
-    public Admin(int edad, String nombreCompleto, String userName, String passW){
-        super(edad, nombreCompleto, userName, passW);
-        setTipoUser(0);
-       
+public class EventException extends Exception {
+
+    public EventException(String message) {
+        super(message);
     }
     
-
-   
     
 }

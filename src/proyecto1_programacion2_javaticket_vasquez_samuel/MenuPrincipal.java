@@ -17,6 +17,7 @@ public class MenuPrincipal extends JFrame {
 
     private UserManage uMan;
     private JButton login;
+    private JButton crearE;
     private JButton cerrarLog;
 
     public MenuPrincipal() {
@@ -52,7 +53,25 @@ public class MenuPrincipal extends JFrame {
             LogIn a = new LogIn();
             a.setVisible(true);
         });
+        
+      
+        
+        crearE = new JButton("Crear Evento");
+        crearE.setFont(new Font("Arial Black", Font.PLAIN, 12));
+        crearE.setBounds(320, 200 + 50, 140, 30);
+        add(crearE);
 
+        crearE.addActionListener(e -> {
+            this.dispose();
+            CrearEvent a = new CrearEvent();
+            a.setVisible(true);
+        });
+        
+        crearE.setEnabled(false);
+          if(uMan.getUserActual() != null){
+            crearE.setEnabled(true);
+        }
+       
         if (uMan.getUserActual() != null) {
             cerrarLog = new JButton("Cerrar Sesion");
             cerrarLog.setFont(new Font("Arial Black", Font.PLAIN, 12));

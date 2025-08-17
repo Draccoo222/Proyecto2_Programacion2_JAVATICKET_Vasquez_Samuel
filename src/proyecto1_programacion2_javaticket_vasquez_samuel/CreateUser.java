@@ -52,7 +52,11 @@ public class CreateUser extends JFrame {
         login.setBounds(275, 400, 100, 30);
         
         login.addActionListener(e ->{
-            creacion();
+            try{   
+                creacion();
+            }catch(UserException em){
+               JOptionPane.showMessageDialog(null, em.getMessage()); 
+            } 
         });
         
         add(login);
@@ -122,21 +126,48 @@ public class CreateUser extends JFrame {
      
     }
     
-    private void creacion(){
-        int edad = Integer.parseInt(eD.getText().trim());
+    private void creacion() throws UserException { 
+        int edad;
         String tipo = (String) type.getSelectedItem();
         String nombreC = nombreComp.getText().trim();
         String pass = passW.getText().trim();
         String userN = uName.getText().trim();
-         if(uMan.confirmarContra(pass)){
-            uMan.crearUser(tipo, edad, nombreC, userN, pass);
-            JOptionPane.showMessageDialog(null, "Usuario creado con exito!");
-            salir();
-            System.out.println(uMan.listaUsers(uMan.cantUsers() - 1));
-        }else{
-            JOptionPane.showMessageDialog(null, "Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
+
+        if (!eD.getText().matches("\\d+")) {
+            throw new UserException("PORFAVOR SOLO USAR NUMEROS POSITIVOS EN EDAD");
+        }
+        if (nombreComp.getText().isEmpty() || passW.getText().isEmpty() || uName.getText().isEmpty()
+                || type.getSelectedItem() == null) {
+            throw new UserException("PORFAVOR LLENE TODOS LOS CAMPOS SOLICITADOS");
+        }
+        
+        if (nombreComp.getText().isBlank() || passW.getText().isBlank() || uName.getText().isBlank()) {
+            throw new UserException("PORFAVOR LLENE TODOS LOS CAMPOS SOLICITADOS");
+        }
+      
+        if (!uMan.confirmarContra(pass)) {
+            throw new UserException("Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
                     + "en la contraseña");
-         }
+        }
+        
+        if (!nombreC.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            throw new UserException("El nombre solo puede contener letras y espacios.");
+        }
+        if (!userN.matches("[a-zA-Z0-9_]+")) {
+            throw new UserException("El usuario solo puede contener letras, números y guion bajo.");
+        }
+        
+        if(uMan.buscarUsuario(userN) != null){
+            throw new UserException("ERROR, ESTE NOMBRE DE USUARIO YA ESTA EN USO");
+        }
+
+        edad = Integer.parseInt(eD.getText());
+
+        uMan.crearUser(tipo, edad, nombreC, userN, pass);
+        JOptionPane.showMessageDialog(null, "Usuario creado con exito!");
+        salir();
+        System.out.println(uMan.listaUsers(uMan.cantUsers() - 1));
+        
     }
     
     private void salir(){
@@ -144,7 +175,11 @@ public class CreateUser extends JFrame {
         MenuPrincipal menu = new MenuPrincipal();
         menu.setVisible(true);
     }
- 
+    
+    public static void main(String[] args){
+        new CreateUser().setVisible(true);
+    
+    }
 
     
 }

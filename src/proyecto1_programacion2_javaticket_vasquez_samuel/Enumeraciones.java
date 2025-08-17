@@ -10,6 +10,8 @@ package proyecto1_programacion2_javaticket_vasquez_samuel;
  */
 public final class Enumeraciones {
     
+ 
+    
     public enum Deporte {
        TENIS("tennis"), RUGBY("rugby"), BASEBALL("baseball"), FUTBOL("futbol");
        
@@ -18,6 +20,13 @@ public final class Enumeraciones {
        Deporte(String nombre){
         this.nombre = nombre;
        }
+
+        @Override
+        public String toString() {
+            return nombre;
+        }
+       
+       
        
     }
     
@@ -29,6 +38,12 @@ public final class Enumeraciones {
         Musica(String name){
          this.name = name;
         }
+        
+        @Override
+        public String toString() {
+            return name;
+        }
+       
    
     }
     

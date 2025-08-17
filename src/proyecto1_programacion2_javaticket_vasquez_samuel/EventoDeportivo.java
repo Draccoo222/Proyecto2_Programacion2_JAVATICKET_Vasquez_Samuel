@@ -12,48 +12,51 @@ import java.util.Calendar;
  * @author unwir
  */
 public class EventoDeportivo extends Evento {
-    private String equipoA;
-    private String equipoB;
-    private ArrayList<String> integrantes;
+    private final String equipoA;
+    private final String equipoB;
+    private ArrayList<String> integrantesA;
+    private ArrayList<String> integrantesB;
     private Enumeraciones.Deporte tipo;
 
- 
-    public EventoDeportivo(int codigo, int cantGente, String nombre, String descripcion, Calendar fecha, Enumeraciones.Deporte tipo) {
-        super(codigo, cantGente, nombre, descripcion, fecha);
-        integrantes = new ArrayList<>();
+    public EventoDeportivo(int codigo, String nombre, String descripcion, Calendar fecha, double montoRenta,
+            int cantGente,Enumeraciones.Deporte tipo, String equipoA, String equipoB) {
+        super(codigo, nombre, descripcion, fecha, montoRenta, cantGente);
         this.tipo = tipo;
+        this.equipoA = equipoA;
+        this.equipoB = equipoB;
+        integrantesA = new ArrayList<>();
+        integrantesB = new ArrayList<>();
     }
-
     
     String getTypeEvent() {
        return "deportivo";
     }
-
-
+    
+    public String getOpcional(){
+        return tipo.name();
+    }
+    
     public String getEquipoA() {
         return equipoA;
     }
-
-    public void setEquipoA(String equipoA) {
-        this.equipoA = equipoA;
-    }
-
+    
     public String getEquipoB() {
         return equipoB;
     }
 
-    public void setEquipoB(String equipoB) {
-        this.equipoB = equipoB;
-    }
-
-    public ArrayList<String> getIntegrantes() {
-        return integrantes;
-    }
-
-    public void setIntegrantes(ArrayList<String> integrantes) {
-        this.integrantes = integrantes;
+    public ArrayList<String> getIntegrantesA() {
+        return integrantesA;
     }
     
+     public ArrayList<String> getIntegrantesB() {
+        return integrantesB;
+    }
+
+    
+     @Override
+    public String toString() {
+        return super.toString() + "\n Deporte: " + getOpcional() + "\n";
+    }
     
     
     
