@@ -100,6 +100,15 @@ public class MenuPrincipal extends JFrame {
                 new VerEvento().setVisible(true);
                 
                 });
+                if(uMan.getUserActual() instanceof Limitado){
+                JButton repors = new JButton("Reportes");
+     
+                repors.setBackground(new Color(0xEBC926));
+                repors.setFont(new Font("Serif", Font.BOLD, 18));
+                repors.setBorder(botBor);
+                repors.setBounds(300, 250, 200, 40);
+                add(repors);
+                }
                 
                        
                 
