@@ -6,6 +6,7 @@ package proyecto1_programacion2_javaticket_vasquez_samuel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.Border;
 /**
  *
  * @author unwir
@@ -19,95 +20,113 @@ public class LogIn extends JFrame {
     private JTextField passW = new JTextField();
     
     public LogIn(){
-    
         initComps();
     }
-    
-    
-    private void initComps(){
+      private void initComps() {
         uMan = UserManage.getInstance();
         setSize(780, 520);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
-        
-        setBackground(Color.red);
-        
-        JLabel l = new JLabel("INICIAR SESION");
-        l.setSize(100, 100);
-        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
-        l.setBounds(275, 30, 500, 50);
+        getContentPane().setBackground(new Color(0xA2463)); // Fondo igual a MenuPrincipal
+
+        // Título "INICIAR SESION"
+        JLabel l = new JLabel("INICIAR SESIÓN");
+        l.setForeground(Color.WHITE);
+        l.setFont(new Font("Serif", Font.BOLD, 70));
+        l.setBounds(140, 50, 800, 100);
         add(l);
         
+        // --- Panel para los campos de texto y botones para mejor organización ---
+        JPanel panelLogin = new JPanel();
+        panelLogin.setLayout(new GridBagLayout());
+        panelLogin.setBackground(new Color(0xA2463));
+        panelLogin.setBounds(200, 180, 400, 200);
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Campo de usuario
+        JLabel nomTitle = new JLabel("Nombre de Usuario");
+        nomTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        nomTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelLogin.add(nomTitle, gbc);
+        
+        uName = new JTextField(15);
+        uName.setFont(new Font("Serif", Font.PLAIN, 14));
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panelLogin.add(uName, gbc);
+        
+        // Campo de contraseña
+        JLabel passWTitle = new JLabel("Contraseña");
+        passWTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        passWTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panelLogin.add(passWTitle, gbc);
+        
+        passW = new JTextField(15);
+        passW.setFont(new Font("Serif", Font.PLAIN, 14));
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panelLogin.add(passW, gbc);
+        
+        // Botones
         login = new JButton("LOG IN");
-        login.setForeground(Color.green);
-        login.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        login.setBounds(275, 370, 100, 30);
+        login.setBackground(new Color(0xEBC926));
+        login.setFont(new Font("Serif", Font.BOLD, 18));
+        Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+        login.setBorder(botBor);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        panelLogin.add(login, gbc);
         
-        login.addActionListener(e ->{
-            logeo();
-        });
+        regresar = new JButton("REGRESAR");
+        regresar.setBackground(new Color(0xEBC926));
+        regresar.setFont(new Font("Serif", Font.BOLD, 18));
+        regresar.setBorder(botBor);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        panelLogin.add(regresar, gbc);
+
+        add(panelLogin);
+
+        // Agregando Listeners
+        login.addActionListener(e -> {
+                try{
+                    logeo();
+                }catch(UserException eu){
+                    JOptionPane.showMessageDialog(null, eu.getMessage());     
+                }
+         } );
+        regresar.addActionListener(e -> salir());
         
-        add(login);
-        
-        regresar = new JButton("SALIR");
-        regresar.setForeground(Color.red);
-        regresar.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        regresar.setBounds(450, 370, 100, 30);
-        
-        regresar.addActionListener(e ->{
-            salir();
-        });
-        
-        add(regresar);
-        
-        
-        JLabel nomTitle = new JLabel();
-        nomTitle.setText("Nombre de Usuario");
-        nomTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        nomTitle.setBounds(300, 160, 200, 30);
-        
-        nombreComp.setBounds(300, 200, 200, 20);
-        
-        add(nomTitle);
-        add(nombreComp);
-        
-        JLabel passWTitle = new JLabel();
-        passWTitle.setText("Contraseña");
-        passWTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        passWTitle.setBounds(300, 160 + 50, 200, 30);
-        
-        passW.setBounds(300, 200 + 50, 200, 20);
-        
-        add(passWTitle);
-        add(passW);
-        
-        
-     
     }
     
-    private void logeo(){
-        String pass = passW.getText();
-        String userN = nombreComp.getText();
-         if(uMan.confirmarContra(pass)){
-            if(uMan.logIn(userN, pass)){
-                uMan.logIn(userN, pass);
-                JOptionPane.showMessageDialog(null, "Inicio de Sesion Exitoso!");
-                salir();
-            }
-            else{
-            JOptionPane.showMessageDialog(null, "Contraseña incorrecta o Usuario no existe!");
-            }
-        }else{
-            if(userN.equals("Admin") && pass.equals("supersecreto")){
-                uMan.logIn(userN, pass);
-                JOptionPane.showMessageDialog(null, "Inicio de Sesion Exitoso!");
-                salir();
-            }else{
-            JOptionPane.showMessageDialog(null, "Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
-                    + "en la contraseña");
-            }
-         }
+    private void logeo() throws UserException{
+        String pass = passW.getText().trim();
+        String userN = uName.getText().trim();
+        
+        
+        if(passW.getText().isEmpty() || uName.getText().isEmpty()){
+            throw new UserException("No puede dejar ningun campo vacio");
+        }
+        
+        if(!uMan.logIn(userN, pass)){
+          throw new UserException("El usuario no exist o la contraseña esta mala");
+          
+        }
+   
+   
+        uMan.logIn(userN, pass);
+        JOptionPane.showMessageDialog(null, "Inicio de Sesion Exitoso!");
+        salir();
+         
     }
     
     private void salir(){

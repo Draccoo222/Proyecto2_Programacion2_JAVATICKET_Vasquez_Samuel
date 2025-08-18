@@ -3,50 +3,45 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package proyecto1_programacion2_javaticket_vasquez_samuel;
-import javax.swing.*;
-import java.awt.Component.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
-import javax.swing.border.Border;
-
+import javax.swing.*;
 /**
  *
  * @author unwir
  */
-public class AdminDeUsers extends JFrame {
-   private UserManage uMan;
+public class Reportes extends JFrame {
+     private UserManage uMan;
    private JButton salir;
    
-    public AdminDeUsers(){
+    public Reportes(){
          initComp();
          panelAdmin();
     
     }
-    
-       public void initComp(){
+
+     public void initComp(){
         uMan = UserManage.getInstance();
      
         setSize(780, 520);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(0xA2463));
+        getContentPane().setBackground(new Color(0xaec3fc));
         
-        JLabel l = new JLabel("MANEJO DE USERS");
-        l.setForeground(Color.WHITE);
-        l.setFont(new Font("Serif", Font.BOLD, 50));
-        l.setBounds(150, 40, 500, 50);
+        JLabel l = new JLabel("REPORTES");
+        l.setSize(100, 100);
+        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
+        l.setBounds(240, 40, 500, 50);
         add(l);
+        
         
         System.out.println("User Actual: " + uMan.getUserActualName() + " Rango: " 
           + ((uMan.getUserActual() != null) ? uMan.getUserActual().getTipoUser() : "nulo"));
         
         salir = new JButton("SALIR");
-        salir.setBackground(new Color(0xEBC926));
-        salir.setFont(new Font("Serif", Font.BOLD, 18));
-        Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
-        salir.setBorder(botBor);
-        salir.setBounds(300, 350, 180, 35);
+        salir.setFont(new Font("Arial Black", Font.PLAIN, 12));
+        salir.setBounds(320, 180 + 120, 140, 30);
         add(salir);
         
         salir.addActionListener(e -> {
@@ -58,45 +53,28 @@ public class AdminDeUsers extends JFrame {
     }
     
     public void panelAdmin(){
-        if(uMan.getUserActual() != null && uMan.getUserActual().getTipoUser().equals("admin")){
-            JButton crearU = new JButton("Crear Usuario");
-            JButton editarU = new JButton("Editar Usuario");
+      //  if(uMan.getUserActual() != null && uMan.getUserActual().getTipoUser().equals("admin")){
+            JButton crearU = new JButton("Eventos Realizados");
+            JButton editarU = new JButton("Eventos Futuros");
             JButton elimU = new JButton("Borrar Usuario");
             
-            Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+            JButton[] opcAdmin = {crearU, editarU, elimU};
             
-            crearU.setBackground(new Color(0xEBC926));
-            crearU.setFont(new Font("Serif", Font.BOLD, 18));
-            crearU.setBorder(botBor);
-            
-            editarU.setBackground(new Color(0xEBC926));
-            editarU.setFont(new Font("Serif", Font.BOLD, 18));
-            editarU.setBorder(botBor);
-
-            elimU.setBackground(new Color(0xEBC926));
-            elimU.setFont(new Font("Serif", Font.BOLD, 18));
-            elimU.setBorder(botBor);
-
             crearU.addActionListener(e -> {
-                this.dispose();
-                CreateUser a = new CreateUser();
-                a.setVisible(true);
+            this.dispose();
+             CreateUser a = new CreateUser();
+             a.setVisible(true);
             });
             
             editarU.addActionListener(e -> {
-                if(uMan.cantUsers() >= 2){
                     this.dispose();
-                    EditarUser a = new EditarUser();
+                    EventosFuturos a = new EventosFuturos();
                     a.setVisible(true);
-                }else{
-                    JOptionPane.showMessageDialog(null, "PARA PODER EDITAR USUARIO NECESITA POR LO MENOS 2 CREADOS");
-                
-                }
             });
 
-            crearU.setBounds(300, 200, 180, 35);
-            editarU.setBounds(300, 250, 180, 35);
-            elimU.setBounds(300, 300, 180, 35);
+            crearU.setBounds(320, 180, 140, 30);
+            editarU.setBounds(320, 180 + 40, 140, 30);
+            elimU.setBounds(320, 180 + 80, 140, 30);
             
             elimU.addActionListener(e ->{
                 JComboBox<Usuario> selecU = new JComboBox<>();
@@ -124,10 +102,11 @@ public class AdminDeUsers extends JFrame {
                }
             });
             
-            add(crearU);
-            add(editarU);
-            add(elimU);
+ 
+            for(JButton bot: opcAdmin){
+                   bot.setFont(new Font("Arial Black", Font.PLAIN, 12));
+                   add(bot);   
+               }
         }   
-    }
     //}
 }

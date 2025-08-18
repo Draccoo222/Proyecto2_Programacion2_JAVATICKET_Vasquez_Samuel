@@ -180,7 +180,11 @@ public class EditarUser extends JFrame {
             Usuario userSelect = (Usuario) ola.getSelectedItem();
             int index = uMan.getUsuarios().indexOf(userSelect);
 
-
+            if (!eD.getText().matches("\\d+")) {
+                throw new UserException("PORFAVOR SOLO USAR NUMEROS POSITIVOS EN EDAD");
+            }
+            
+            
              if(nombreComp.getText().trim().isEmpty()){
                 nombreC = userSelect.getNombreCompleto();
              }  
@@ -198,20 +202,24 @@ public class EditarUser extends JFrame {
              if(type.getSelectedItem() == null){
                  tipo = userSelect.getTipoUser();
              }
-
-
-             if(uMan.confirmarContra(pass)){
-                uMan.getUsuarios().remove(userSelect);
-                uMan.insert(index, tipo, edad, nombreC, userN, pass);
-                JOptionPane.showMessageDialog(null, "Usuario editado con exito!");
-                salir();
-                System.out.println(uMan.listaUsers(uMan.cantUsers() - 1));
-            }else{
-                JOptionPane.showMessageDialog(null, "Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
-                        + "en la contraseña");
+             
+             if (!uMan.confirmarContra(pass)) {
+                throw new UserException("Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
+                            + "en la contraseña");
              }
-        }catch(Exception e){
-            System.out.println("ERROR XD");
+             
+             
+            ArrayList<Evento> mantenerList = userSelect.getEventosCreados();
+            uMan.getUsuarios().remove(userSelect);
+            uMan.insert(index, tipo, edad, nombreC, userN, pass);
+            uMan.getUsuarios().get(index).setEventosCreados(mantenerList);
+            JOptionPane.showMessageDialog(null, "Usuario editado con exito!");
+            salir();
+            System.out.println(uMan.listaUsers(uMan.cantUsers() - 1));
+            System.out.println(uMan.getUsuarios().get(index).getEventosCreados());
+          
+        }catch(UserException e){
+            System.out.println(e.getMessage());
         
         }
     }

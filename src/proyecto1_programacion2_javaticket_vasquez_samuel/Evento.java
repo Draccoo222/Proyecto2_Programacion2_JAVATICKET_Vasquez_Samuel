@@ -29,6 +29,18 @@ public abstract class Evento {
         this.cantGente = cantGente;
         cancelado = false;
     }
+
+    public void setCantGente(int cantGente) {
+        this.cantGente = cantGente;
+    }
+
+    public boolean isCancelado() {
+        return cancelado;
+    }
+    
+    public void setCancel() {
+        cancelado = true;
+    }
   
     
     abstract String getTypeEvent();
@@ -77,10 +89,7 @@ public abstract class Evento {
         this.fecha = fecha;
     }
 
-    public double getPrecio() {
-        return montoRenta;
-    }
-    
+  
     abstract public String getBonus();
 
     @Override
@@ -88,6 +97,12 @@ public abstract class Evento {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return "codigo: " + codigo + "\n nombre: " + nombre + "\n descripcion: " + descripcion + "\n fecha: " + sdf.format(fecha.getTime()) + "\n montoRenta: " + montoRenta + "\n cantGente: " + cantGente + 
                 "\n Cancelado: " + ((cancelado) ? "Si" : "No");
+    }
+    
+    public String eventoPrint() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return "(Codigo: " + codigo + ", Nombre: " + nombre + ", Tipo: " + 
+               getTypeEvent() + ", fecha: " + sdf.format(fecha.getTime()) + ", Monto de Renta: " + montoRenta + ")\n";
     }
    
 

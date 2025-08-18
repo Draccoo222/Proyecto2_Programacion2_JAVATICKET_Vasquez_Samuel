@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.Component.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.Border;
 
 /**
  *
@@ -32,49 +33,38 @@ public class MenuPrincipal extends JFrame {
         setSize(780, 520);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
+        getContentPane().setBackground(new Color(0xA2463));
 
         JLabel l = new JLabel("JAVA TICKETS");
         l.setSize(100, 100);
-        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
-        l.setBounds(265, 40, 500, 50);
+        l.setForeground(Color.WHITE);
+        l.setFont(new Font("Serif", Font.BOLD, 70));
+        l.setBounds(140, 50, 800, 100);
         add(l);
-
+        
         System.out.println("User Actual: " + uMan.getUserActualName() + " Rango: "
                 + ((uMan.getUserActual() != null) ? uMan.getUserActual().getTipoUser() : "nulo"));
 
-        login = new JButton("Iniciar Sesion");
-        login.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        login.setBounds(320, 200, 140, 30);
+        login = new JButton("Iniciar Sesión");
+        login.setBackground(new Color(0xEBC926));
+        login.setFont(new Font("Serif", Font.BOLD, 18));
+        Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+        login.setBorder(botBor);
+        login.setBounds(310, 200, 180, 35);
         add(login);
-
+        
         login.addActionListener(e -> {
             this.dispose();
             LogIn a = new LogIn();
             a.setVisible(true);
         });
         
-      
-        
-        crearE = new JButton("Crear Evento");
-        crearE.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        crearE.setBounds(320, 200 + 50, 140, 30);
-        add(crearE);
-
-        crearE.addActionListener(e -> {
-            this.dispose();
-            CrearEvent a = new CrearEvent();
-            a.setVisible(true);
-        });
-        
-        crearE.setEnabled(false);
-          if(uMan.getUserActual() != null){
-            crearE.setEnabled(true);
-        }
        
         if (uMan.getUserActual() != null) {
             cerrarLog = new JButton("Cerrar Sesion");
-            cerrarLog.setFont(new Font("Arial Black", Font.PLAIN, 12));
+            cerrarLog.setBackground(new Color(0xEBC926));
+            cerrarLog.setFont(new Font("Serif", Font.BOLD, 18));
+            cerrarLog.setBorder(botBor);
             cerrarLog.setBounds(80, 400, 140, 30);
             add(cerrarLog);
 
@@ -93,23 +83,63 @@ public class MenuPrincipal extends JFrame {
         e.setVisible(true);
     }
 
-    public void panelAdmin() {
-        if (uMan.getUserActual() != null && uMan.getUserActual().getTipoUser().equals("admin")) {
-            JButton adminPan = new JButton("User Manage");
+   public void panelAdmin() {
+        if(uMan.getUserActual() != null){
+            Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+            
+            if (uMan.getUserActual() instanceof Admin) {
+                JButton adminPan = new JButton("User Manage");
+                adminPan.setBackground(new Color(0xEBC926));
+                adminPan.setFont(new Font("Serif", Font.BOLD, 18));
+                adminPan.setBorder(botBor);
+                adminPan.setBounds(300, 200, 200, 40);
 
-            adminPan.setFont(new Font("Arial Black", Font.PLAIN, 12));
-            adminPan.setBounds(320, 200, 140, 30);
+                adminPan.addActionListener(e -> {
+                    this.dispose();
+                    AdminDeUsers aUser = new AdminDeUsers();
+                    aUser.setVisible(true);
+                });
 
-            adminPan.addActionListener(e -> {
-                this.dispose();
-                AdminDeUsers aUser = new AdminDeUsers();
-                aUser.setVisible(true);
-            });
+                add(adminPan);
+            }
+            if(!(uMan.getUserActual() instanceof Limitado)){
+                JButton adminEventPan = new JButton("Event Manage");
+                JButton repors = new JButton("Reportes");
+                
+                adminEventPan.setBackground(new Color(0xEBC926));
+                adminEventPan.setFont(new Font("Serif", Font.BOLD, 18));
+                adminEventPan.setBorder(botBor);
+                
+                repors.setBackground(new Color(0xEBC926));
+                repors.setFont(new Font("Serif", Font.BOLD, 18));
+                repors.setBorder(botBor);
 
-            add(adminPan);
-
+                if(uMan.getUserActual() instanceof Admin){
+                    adminEventPan.setBounds(300, 250, 200, 40);
+                    repors.setBounds(300, 300, 200, 40);
+                } else {
+                    adminEventPan.setBounds(300, 200, 200, 40);
+                    repors.setBounds(300, 250, 200, 40);
+                }
+                
+                adminEventPan.addActionListener(e -> {
+                    this.dispose();
+                    AdminEventos aUser = new AdminEventos();
+                    aUser.setVisible(true);
+                });
+                
+                repors.addActionListener(e -> {
+                    this.dispose();
+                    Reportes aUser = new Reportes();
+                    aUser.setVisible(true);
+                });
+                
+                add(repors);   
+                add(adminEventPan);   
+            }
         }
     }
+
 
     public static void main(String[] args) {
         MenuPrincipal a = new MenuPrincipal();

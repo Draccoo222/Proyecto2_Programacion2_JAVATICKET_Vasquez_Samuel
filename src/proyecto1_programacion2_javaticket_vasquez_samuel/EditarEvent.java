@@ -11,7 +11,7 @@ import com.toedter.calendar.JDateChooser;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.awt.BorderLayout;
 /**
  *
  * @author unwir
@@ -47,11 +47,12 @@ public class EditarEvent extends JFrame {
     private PanelEditarEvent tablaEvento = new PanelEditarEvent();
 
     public EditarEvent() {
+        System.out.println(uMan.getEventosTotales());
         initComps();
     }
 
     private void initComps() {
-
+        
         setSize(800, 620);
         setLocationRelativeTo(null);
         setLayout(null);
@@ -65,10 +66,11 @@ public class EditarEvent extends JFrame {
         l.setBounds(275, 20, 500, 50);
         add(l);
 
-        crearE = new JButton("Crear");
+        crearE = new JButton("EDITAR");
         crearE.setForeground(Color.green);
         crearE.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        crearE.setBounds(275, 430, 100, 30);
+        crearE.setBounds(260 - 115, 430, 100, 30);
+        crearE.setSize(120, 30);
 
         crearE.addActionListener(e -> {
             try {
@@ -84,7 +86,8 @@ public class EditarEvent extends JFrame {
         regresar = new JButton("SALIR");
         regresar.setForeground(Color.red);
         regresar.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        regresar.setBounds(450, 430, 100, 30);
+        regresar.setBounds(260 - 115, 430 + 50, 100, 30);
+        regresar.setSize(120, 30);
 
         regresar.addActionListener(e -> {
             salir();
@@ -109,6 +112,7 @@ public class EditarEvent extends JFrame {
 
         cod.setFont(new Font("Arial Black", Font.BOLD, 15));
         cod.setBounds(430, 175 - 40 - 80, 400, 60);
+        
 
         nombre.setFont(new Font("Arial Black", Font.BOLD, 15));
         nombre.setBounds(430, 175 - 20 - 80, 400, 60);
@@ -188,7 +192,7 @@ public class EditarEvent extends JFrame {
         teamA.setEnabled(false);
         teamB.setEnabled(false);
         
-        add(tablaEvento);
+        add(tablaEvento, BorderLayout.CENTER);
 
     }
 
@@ -202,9 +206,7 @@ public class EditarEvent extends JFrame {
         String eqB = teamB.getText().trim();
 
         Date fechaReal = fecha.getDate();
-        Enumeraciones.Deporte opcionalD = null;
-        Enumeraciones.Musica opcionalM = null;
-
+      
         if (codigo.getText().isEmpty() || nombreEvent.getText().isEmpty() || descripcion.getText().isEmpty() || fecha.getDate() == null) {
             throw new EventException("NO PUEDE DEJAR NINGUN CAMPO VACIO");
         }
@@ -212,9 +214,6 @@ public class EditarEvent extends JFrame {
         if (!(codigo.getText().matches("\\d+") && renta.getText().matches("\\d+(\\.\\d+)?") && cantGente.getText().matches("\\d+"))) {
             throw new EventException("SOLO PUEDE USAR NÚMEROS POSITIVOS EN CÓDIGO, RENTA Y CANTIDAD DE GENTE");
         }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(fechaReal);
 
         code = Integer.parseInt(codigo.getText().trim());
         montR = Double.parseDouble(renta.getText().trim());
@@ -232,35 +231,36 @@ public class EditarEvent extends JFrame {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        if (uMan.buscarEvento(code, 0) != null) {
-            throw new EventException("ERROR, ESTE CODIGO YA HA SIDO USADO");
-        }
-
         if (sdf.format(fechaHoy.getTime()).equals(sdf.format(fechaReal.getTime()))) {
-            throw new EventException("No puede crear un evento el mismo dia");
+            throw new EventException("No puede dejar que la fehca sea  el mismo dia");
         }
+        
+        
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaReal);
+        
+       
+        boolean fechaDisponible = uMan.getEventosTotales().stream().anyMatch(evento ->{
+            return (sdf.format(evento.getFecha().getTime()).equals(sdf.format(cal.getTime())) && !evento.isCancelado());
+        });
+                
+        if(fechaDisponible){
+            throw new EventException("ERROR, NO SE PUEDE TENER MAS DE UN EVENTO EN LA MISMA FECHA");
+        }
+                
+     
 
+        eSelected.setDescripcion(desc);
+        eSelected.setNombre(nomE);
+        eSelected.setFecha(cal);
+        eSelected.setCantGente(people);
+        eSelected.setPrice(montR);
+        JOptionPane.showMessageDialog(null, "Datos cambiados con exito");
+        System.out.println(uMan.getEventosTotales());
+        
         eventCal.refrescarEventos();
     }
 
-    private void actualizarCombo(JComboBox<Object> combo, String tipo) {
-        combo.removeAllItems();
-        switch (tipo) {
-            case "deportivo":
-                for (Enumeraciones.Deporte d : Enumeraciones.Deporte.values()) {
-                    combo.addItem(d);
-                }
-                break;
-            case "musical":
-                for (Enumeraciones.Musica d : Enumeraciones.Musica.values()) {
-                    combo.addItem(d);
-                }
-                break;
-            case "religioso":
-                combo.setEnabled(false);
-                break;
-        }
-    }
 
     private void buscarEv() throws EventException {
         int code;
@@ -287,10 +287,13 @@ public class EditarEvent extends JFrame {
         renta.setText(String.valueOf(eSelected.getMontoRenta()));
         fecha.setCalendar(eSelected.getFecha());
      
+        tablaEvento.setVisible(true);
+        tablaEvento.cargarEvento(eSelected);
+        tablaEvento.setBounds(350, 150, 400, 320);
         
-       
-        tablaEvento.setComps(eSelected);
-        tablaEvento.setBounds(350, 150, 350, 300);
+        if(eSelected instanceof EventoReligioso){
+            tablaEvento.setVisible(false);
+        }
           
     
     }
@@ -301,14 +304,6 @@ public class EditarEvent extends JFrame {
         menu.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        UserManage uMen = UserManage.getInstance();
-        uMen.getEventosTotales().add(new EventoMusical(1, "S", "Pinga", Calendar.getInstance(), 1000, 10, Enumeraciones.Musica.CLASICA));
-        uMen.getEventosTotales().add(new EventoDeportivo(2, "Balon de Playa", "Pinga", Calendar.getInstance(), 1000, 10, Enumeraciones.Deporte.FUTBOL, "Farsa", "Vardrid"));
-        
-        
-        new EditarEvent().setVisible(true);
 
-    }
 
 }

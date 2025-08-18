@@ -1,103 +1,5 @@
 package proyecto1_programacion2_javaticket_vasquez_samuel;
 
-/*import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JDayChooser;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Calendar;
-
-public class CalendarEventos {
-
-    private UserManage uMan;
-    private JDayChooser dayChooser;
-    private JCalendar jcal;
-
-    public CalendarEventos(UserManage uMan) {
-        this.uMan = uMan;
-    }
-
-    public JDateChooser crearDateChooserConEventos() {
-        JDateChooser dateChooser = new JDateChooser();
-        this.jcal = dateChooser.getJCalendar();
-        this.dayChooser = jcal.getDayChooser();
-
-        // Detectar cambios en mes, año o día
-        jcal.addPropertyChangeListener(evt -> {
-            String prop = evt.getPropertyName();
-            if ("month".equals(prop) || "year".equals(prop) || "day".equals(prop)) {
-                actualizarColores(dayChooser, jcal);
-            }
-        });
-
-        // Pintar al inicio
-        actualizarColores(dayChooser, jcal);
-
-        return dateChooser;
-    }
-
-    public void refrescarEventos() {
-        if (dayChooser != null && jcal != null) {
-            actualizarColores(dayChooser, jcal);
-        }
-    }
-
-    private void actualizarColores(JDayChooser dayChooser, JCalendar jcal) {
-        JPanel dayPanel = dayChooser.getDayPanel();
-        Component[] comps = dayPanel.getComponents();
-        Calendar cal = (Calendar) jcal.getCalendar().clone();
-
-        int diaSeleccionado = cal.get(Calendar.DAY_OF_MONTH);
-
-        for (Component comp : comps) {
-            if (comp instanceof JButton) {
-                JButton dayButton = (JButton) comp;
-                try {
-                    int dayNum = Integer.parseInt(dayButton.getText());
-                    cal.set(Calendar.DAY_OF_MONTH, dayNum);
-
-                    StringBuilder tooltipText = new StringBuilder();
-                    boolean esEvento = uMan.getEventosTotales().stream().anyMatch(evento -> {
-                        Calendar f = Calendar.getInstance();
-                        f.setTime(evento.getFecha().getTime());
-                        if (f.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
-                            f.get(Calendar.MONTH) == cal.get(Calendar.MONTH) &&
-                            f.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH)) {
-                            tooltipText.append("Evento: " + evento.getNombre()).append("\n");
-                            return true;
-                        }
-                        return false;
-                    });
-
-                    // Si es el día seleccionado
-                    if (dayNum == diaSeleccionado) {
-                        dayButton.setBackground(esEvento ? new Color(255, 255, 150) : new Color(200, 220, 255));
-                        dayButton.setOpaque(true);
-                        dayButton.setContentAreaFilled(true);
-                    } else {
-                        dayButton.setOpaque(true);
-                        dayButton.setContentAreaFilled(true);
-                        dayButton.setBorderPainted(true);
-                        dayButton.setBackground(esEvento ? Color.YELLOW : Color.WHITE);
-                    }
-
-                    dayButton.setOpaque(true);
-                    dayButton.setToolTipText(
-                            esEvento ? "<html>" + tooltipText.toString().replace("\n", "<br>") + "</html>" : null
-                    );
-
-                } catch (NumberFormatException ex) {
-                    // Botón vacío o encabezado
-                    dayButton.setBackground(Color.LIGHT_GRAY);
-                    dayButton.setOpaque(true);
-                    dayButton.setToolTipText(null);
-                }
-            }
-        }
-        dayChooser.repaint();
-    }
-}*/
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
@@ -160,7 +62,7 @@ public class CalendarEventos {
                     boolean esEvento = uMan.getEventosTotales().stream().anyMatch(evento -> {
                         Calendar f = Calendar.getInstance();
                         f.setTime(evento.getFecha().getTime());
-                        if (f.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
+                        if (!evento.isCancelado() && f.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
                             f.get(Calendar.MONTH) == cal.get(Calendar.MONTH) &&
                             f.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH)) {
                             tooltipText.append(evento.getNombre()).append("\n");

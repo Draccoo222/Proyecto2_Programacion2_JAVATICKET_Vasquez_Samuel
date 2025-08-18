@@ -265,6 +265,15 @@ public class CrearEvent extends JFrame {
             throw new EventException("No puede crear un evento el mismo dia");
         }
         
+        boolean fechaDisponible = uMan.getEventosTotales().stream().anyMatch(evento ->{
+            return (sdf.format(evento.getFecha().getTime()).equals(sdf.format(cal.getTime())) && !evento.isCancelado());
+        });
+                
+        if(fechaDisponible){
+            throw new EventException("ERROR, NO SE PUEDE TENER MAS DE UN EVENTO EN LA MISMA FECHA");
+        }
+        
+        
         switch (tipoE) {
             case "deportivo":
                 opcionalD = (Enumeraciones.Deporte) bonus.getSelectedItem();

@@ -74,6 +74,16 @@ abstract public class Usuario {
                 type = "nulo";   
         }
     }
+
+    public void setEventosCreados(ArrayList<Evento> eventosCreados) {
+        this.eventosCreados = eventosCreados;
+    }
+    
+    
+    
+    public int numUserEvents(){
+        return eventosCreados.size();
+    }
     
     public Evento buscarEvento(int codigo, int indice){
         if(indice >= eventosCreados.size()){
