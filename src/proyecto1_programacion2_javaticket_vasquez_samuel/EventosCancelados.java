@@ -9,8 +9,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -20,11 +23,11 @@ import javax.swing.table.JTableHeader;
  *
  * @author unwir
  */
-public class EventosFuturos extends JFrame {
+public class EventosCancelados extends JFrame {
 
     UserManage uMan;
 
-    public EventosFuturos() {
+    public EventosCancelados() {
         initComp();
     }
 
@@ -39,17 +42,11 @@ public class EventosFuturos extends JFrame {
         int[] contadores = {0, 0, 0};
         double[] montos = {0, 0, 0};
         
-        JLabel lal = new JLabel("Eventos Futuros");
+        JLabel lal = new JLabel("Eventos Realizados");
         lal.setForeground(Color.WHITE);
         lal.setFont(new Font("Serif", Font.BOLD, 40));
-        lal.setBounds(250, -50, 500, 200);  
-        
-            
-        JButton salir = new JButton("Salir");
-        salir.setBackground(new Color(0xEBC926));
-        salir.setFont(new Font("Serif", Font.BOLD, 16));
-        salir.setBounds(30, 430, 100, 30); 
-        
+        lal.setBounds(230, -50, 500, 200);    
+
         JPanel panelEventos = crearPanelEventosListado(uMan, contadores, montos);
         JPanel panelStats = crearPanelEventosStats(contadores, montos);
 
@@ -59,17 +56,14 @@ public class EventosFuturos extends JFrame {
         add(lal);
         add(panelEventos);
         add(panelStats);
-        add(salir);
 
     }
    
     public JPanel crearPanelEventosListado(UserManage userManager, int[] contadores, double[] montos) {
         Color azulito = new Color(30, 60, 90);
-
         String[] columnasEventos = {"TIPO", "NOMBRE", "MONTO", "FECHA"};
         DefaultTableModel modeloEventos = new DefaultTableModel(columnasEventos, 0);
         
-          
         Calendar hoyCal = Calendar.getInstance();
         hoyCal.set(Calendar.HOUR_OF_DAY, 0);
         hoyCal.set(Calendar.MINUTE, 0);
@@ -80,18 +74,16 @@ public class EventosFuturos extends JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         userManager.getEventosTotales().stream()
-                .filter(evento -> !evento.isCancelado())
+                .filter(evento -> evento.isCancelado())
                 .sorted((e1, e2) -> e2.getFecha().compareTo(e1.getFecha()))
                 .forEach(evento -> {
-                    if(evento.getFecha().after(hoyCal)){
-                    
                     modeloEventos.addRow(new Object[]{
                         evento.getClass().getSimpleName(),
                         evento.getNombre(),
                         evento.getMontoRenta(),
                         sdf.format(evento.getFecha().getTime())
                     });
-
+                    
                     if (evento instanceof EventoDeportivo) {
                         contadores[0]++;
                         montos[0] += evento.getMontoRenta();
@@ -102,7 +94,7 @@ public class EventosFuturos extends JFrame {
                         contadores[2]++;
                         montos[2] += evento.getMontoRenta();
                     }
-                    }
+                
                 });
 
         JTable tablaEventos = new JTable(modeloEventos);
@@ -214,8 +206,7 @@ public class EventosFuturos extends JFrame {
             }
         });
     }
-    
- 
 
+  
 
 }

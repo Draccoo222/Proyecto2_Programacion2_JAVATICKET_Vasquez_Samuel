@@ -18,7 +18,7 @@ public class EventoMusical extends Evento {
     
     
     public EventoMusical(int codigo,String nombre, String descripcion, Calendar fecha, double montoRenta, int cantGente, Enumeraciones.Musica tipo ) {
-        super(codigo, nombre, descripcion, fecha, montoRenta, cantGente);
+        super(codigo, nombre, descripcion, fecha, montoRenta + (montoRenta*0.3), cantGente);
         this.tipo = tipo;
         integrantes = new ArrayList<>();
     }
@@ -26,6 +26,7 @@ public class EventoMusical extends Evento {
     public String getTypeEvent(){
         return "musical";
     }
+    
 
     public ArrayList<String> getIntegrantes() {
         return integrantes;

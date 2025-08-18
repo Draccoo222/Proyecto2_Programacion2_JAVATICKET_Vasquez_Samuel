@@ -9,8 +9,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -31,18 +34,23 @@ public class EventosRealizados extends JFrame {
     public void initComp() {
         uMan = UserManage.getInstance();
 
-        setSize(780, 520);
+        setSize(780, 540);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
+        getContentPane().setBackground(new Color(0xA2463));
 
         int[] contadores = {0, 0, 0};
         double[] montos = {0, 0, 0};
         
         JLabel lal = new JLabel("Eventos Realizados");
-        lal.setFont(new Font("Arial Black", Font.BOLD, 35));
-        lal.setBounds(215, -50, 500, 200);
+        lal.setForeground(Color.WHITE);
+        lal.setFont(new Font("Serif", Font.BOLD, 40));
+        lal.setBounds(230, -50, 500, 200);    
         
+        JButton salir = new JButton("Salir");
+        salir.setBackground(new Color(0xEBC926));
+        salir.setFont(new Font("Serif", Font.BOLD, 16));
+        salir.setBounds(30, 430, 100, 30); 
         
 
         JPanel panelEventos = crearPanelEventosListado(uMan, contadores, montos);
@@ -51,20 +59,24 @@ public class EventosRealizados extends JFrame {
         panelEventos.setBounds(150, 80, 500, 200);
         panelStats.setBounds(150, 320, 500, 150);
         
-       
-
-  
         add(lal);
         add(panelEventos);
         add(panelStats);
+        add(salir);
 
     }
    
     public JPanel crearPanelEventosListado(UserManage userManager, int[] contadores, double[] montos) {
         Color azulito = new Color(30, 60, 90);
-
         String[] columnasEventos = {"TIPO", "NOMBRE", "MONTO", "FECHA"};
         DefaultTableModel modeloEventos = new DefaultTableModel(columnasEventos, 0);
+        
+        Calendar hoyCal = Calendar.getInstance();
+        hoyCal.set(Calendar.HOUR_OF_DAY, 0);
+        hoyCal.set(Calendar.MINUTE, 0);
+        hoyCal.set(Calendar.SECOND, 0);
+        hoyCal.set(Calendar.MILLISECOND, 0);
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -72,25 +84,26 @@ public class EventosRealizados extends JFrame {
                 .filter(evento -> !evento.isCancelado())
                 .sorted((e1, e2) -> e2.getFecha().compareTo(e1.getFecha()))
                 .forEach(evento -> {
-                    if(evento.getFecha().before(Calendar.getInstance())){
-                        modeloEventos.addRow(new Object[]{
-                            evento.getClass().getSimpleName(),
-                            evento.getNombre(),
-                            evento.getMontoRenta(),
-                            sdf.format(evento.getFecha().getTime())
-                        });
-
-                        if (evento instanceof EventoDeportivo) {
-                            contadores[0]++;
-                            montos[0] += evento.getMontoRenta();
-                        } else if (evento instanceof EventoMusical) {
-                            contadores[1]++;
-                            montos[1] += evento.getMontoRenta();
-                        } else if (evento instanceof EventoReligioso) {
-                            contadores[2]++;
-                            montos[2] += evento.getMontoRenta();
-                        }
+                if(evento.getFecha().before(hoyCal)){
+                    modeloEventos.addRow(new Object[]{
+                        evento.getClass().getSimpleName(),
+                        evento.getNombre(),
+                        evento.getMontoRenta(),
+                        sdf.format(evento.getFecha().getTime())
+                    });
+                    
+                    if (evento instanceof EventoDeportivo) {
+                        contadores[0]++;
+                        montos[0] += evento.getMontoRenta();
+                    } else if (evento instanceof EventoMusical) {
+                        contadores[1]++;
+                        montos[1] += evento.getMontoRenta();
+                    } else if (evento instanceof EventoReligioso) {
+                        contadores[2]++;
+                        montos[2] += evento.getMontoRenta();
                     }
+                }
+           
                 });
 
         JTable tablaEventos = new JTable(modeloEventos);
@@ -202,27 +215,6 @@ public class EventosRealizados extends JFrame {
             }
         });
     }
-
-    public static void main(String[] args) {
-        Calendar ayer = Calendar.getInstance();
-        ayer.add(Calendar.DAY_OF_MONTH, -1);
-        UserManage uMen = UserManage.getInstance();
-        uMen.getEventosTotales().add(new EventoReligioso(1, "Prueba", "Pruebaaaa", ayer, 2020.1, 3000));
-        uMen.getEventosTotales().add(new EventoDeportivo(2, "Prueba2", "Pruebaaaa2", ayer, 2020.1, 3000,
-                Enumeraciones.Deporte.BASEBALL, "bulls", "niggers"));
-        uMen.getEventosTotales().add(new EventoMusical(3, "Prueba3", "Pruebaaaa4", ayer, 2020.1, 3000,
-                Enumeraciones.Musica.POP));
-        uMen.getEventosTotales().add(new EventoDeportivo(4, "Prueba2", "Pruebaaaa2", ayer, 2020.1, 3000,
-                Enumeraciones.Deporte.BASEBALL, "bulls", "niggers"));
-        uMen.getEventosTotales().add(new EventoMusical(5, "Prueba3", "Pruebaaaa4", ayer, 2020.1, 3000,
-                Enumeraciones.Musica.POP));
-        uMen.getEventosTotales().add(new EventoDeportivo(6, "Prueba2", "Pruebaaaa2", Calendar.getInstance(), 2020.1, 3000,
-                Enumeraciones.Deporte.BASEBALL, "bulls", "niggers"));
-        uMen.getEventosTotales().add(new EventoMusical(7, "Prueba3", "Pruebaaaa4", Calendar.getInstance(), 2020.1, 3000,
-                Enumeraciones.Musica.POP));
-
-        new EventosRealizados().setVisible(true);
-
-    }
-
+    
+  
 }

@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.awt.BorderLayout;
+import javax.swing.border.EmptyBorder;
+
 /**
  *
  * @author unwir
@@ -39,11 +41,14 @@ public class EditarEvent extends JFrame {
     private JTextField teamA = new JTextField();
     private JTextField teamB = new JTextField();
     private JTextField codigo = new JTextField();
+    private JTextField converts = new JTextField();
 
     private JLabel cod = new JLabel("Codigo: N/A");
     private JLabel nombre = new JLabel("Evento: N/A");
     private JLabel tipe = new JLabel("Categoria: N/A");
     
+    JPanel panelIzq = new JPanel();
+
     private PanelEditarEvent tablaEvento = new PanelEditarEvent();
 
     public EditarEvent() {
@@ -52,219 +57,219 @@ public class EditarEvent extends JFrame {
     }
 
     private void initComps() {
-        
-        setSize(800, 620);
+        setSize(950, 630);
         setLocationRelativeTo(null);
-        setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(new Color(30, 60, 90));
 
-        setBackground(Color.red);
+        // ====== TITULO ======
+        JLabel titulo = new JLabel("Editar Evento", JLabel.CENTER);
+        titulo.setFont(new Font("Segoe UI Black", Font.BOLD, 32));
+        titulo.setForeground(Color.WHITE);
+        titulo.setBorder(new EmptyBorder(20, 0, 20, 0));
+        add(titulo, BorderLayout.NORTH);
 
-        JLabel l = new JLabel("Editar Evento");
-        l.setSize(100, 100);
-        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
-        l.setBounds(275, 20, 500, 50);
-        add(l);
+        // ====== PANEL IZQUIERDO ======
+        panelIzq = new JPanel();
+        panelIzq.setLayout(new BoxLayout(panelIzq, BoxLayout.Y_AXIS));
+        panelIzq.setBackground(new Color(30, 60, 90));
+        panelIzq.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        crearE = new JButton("EDITAR");
-        crearE.setForeground(Color.green);
-        crearE.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        crearE.setBounds(260 - 115, 430, 100, 30);
-        crearE.setSize(120, 30);
+        Font fuenteLbl = new Font("Segoe UI", Font.BOLD, 14);
+        Color lblColor = Color.WHITE;
 
-        crearE.addActionListener(e -> {
-            try {
-                edicion();
-            } catch (EventException ev) {
-                JOptionPane.showMessageDialog(null, ev.getMessage());
-            }
-
-        });
-
-        add(crearE);
-
-        regresar = new JButton("SALIR");
-        regresar.setForeground(Color.red);
-        regresar.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        regresar.setBounds(260 - 115, 430 + 50, 100, 30);
-        regresar.setSize(120, 30);
-
-        regresar.addActionListener(e -> {
-            salir();
-        });
-
-        add(regresar);
+        panelIzq.add(crearLabel("Buscar Evento", fuenteLbl, lblColor));
+        panelIzq.add(codigo);
+        panelIzq.add(Box.createVerticalStrut(10));
 
         buscarE = new JButton("Buscar");
-        buscarE.setForeground(Color.MAGENTA);
-        buscarE.setFont(new Font("Arial", Font.BOLD, 12));
-        buscarE.setBounds(320, 175 - 75, 100, 30);
-        buscarE.setSize(80, 20);
-
+        estilizarBoton(buscarE, new Color(102, 153, 255));
         buscarE.addActionListener(e -> {
             try {
                 buscarEv();
             } catch (EventException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-
+                JOptionPane.showMessageDialog(this, ex.getMessage());
             }
         });
+        panelIzq.add(buscarE);
+        panelIzq.add(Box.createVerticalStrut(20));
 
-        cod.setFont(new Font("Arial Black", Font.BOLD, 15));
-        cod.setBounds(430, 175 - 40 - 80, 400, 60);
+        panelIzq.add(crearLabel("Nombre de Evento", fuenteLbl, lblColor));
+        panelIzq.add(nombreEvent);
+        panelIzq.add(Box.createVerticalStrut(10));
+
+        panelIzq.add(crearLabel("Descripción", fuenteLbl, lblColor));
+        panelIzq.add(descripcion);
+        panelIzq.add(Box.createVerticalStrut(10));
+
+        panelIzq.add(crearLabel("Monto de Renta", fuenteLbl, lblColor));
+        panelIzq.add(renta);
+        panelIzq.add(Box.createVerticalStrut(10));
+
+        panelIzq.add(crearLabel("Cantidad de Gente", fuenteLbl, lblColor));
+        panelIzq.add(cantGente);
+        panelIzq.add(Box.createVerticalStrut(10));
         
+        panelIzq.add(crearLabel("Cantidad de Convertidos", fuenteLbl, lblColor));
+        panelIzq.add(converts);
+        panelIzq.add(Box.createVerticalStrut(10));
 
-        nombre.setFont(new Font("Arial Black", Font.BOLD, 15));
-        nombre.setBounds(430, 175 - 20 - 80, 400, 60);
-
-        tipe.setFont(new Font("Arial Black", Font.BOLD, 15));
-        tipe.setBounds(430, 175 - 80, 400, 60);
-
-        add(cod);
-        add(nombre);
-        add(tipe);
-
-        add(buscarE);
-
-        JLabel busEtitle = new JLabel();
-        busEtitle.setText("Buscar Evento");
-        busEtitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        busEtitle.setBounds(300 - 200, 175 - 100, 200, 30);
-
-        codigo.setBounds(300 - 200, 200 - 100, 200, 20);
-
-        add(busEtitle);
-        add(codigo);
-
-        JLabel nomTitle = new JLabel();
-        nomTitle.setText("Nombre De Evento");
-        nomTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        nomTitle.setBounds(300- 200, 175 - 50, 200, 30);
-
-        nombreEvent.setBounds(300 - 200, 200 - 50, 200, 20);
-
-        add(nomTitle);
-        add(nombreEvent);
-
-        JLabel uTitle = new JLabel();
-        uTitle.setText("Descripcion");
-        uTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        uTitle.setBounds(300 - 200, 175, 200, 30);
-
-        descripcion.setBounds(300 - 200, 200, 200, 20);
-
-        add(uTitle);
-        add(descripcion);
-
-        JLabel genteTitle = new JLabel();
-        genteTitle.setText("Cantidad de Gende");
-        genteTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        genteTitle.setBounds(300 - 200, 175 + 100, 200, 30);
-
-        cantGente.setBounds(300 - 200, 200 + 100, 200, 20);
-
-        add(genteTitle);
-        add(cantGente);
-
-        JLabel renTitle = new JLabel();
-        renTitle.setText("Monto De Renta");
-        renTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        renTitle.setBounds(300- 200, 175 + 50, 200, 30);
-
-        renta.setBounds(300 - 200, 200 + 50, 200, 20);
-
-        add(renTitle);
-        add(renta);
-
-        JLabel fTitle = new JLabel();
-        fTitle.setText("Fecha");
-        fTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        fTitle.setBounds(300 - 200, 175 + 150, 200, 30);
-
-        fecha.setBounds(300- 200, 200 + 150, 200, 20);
+        panelIzq.add(crearLabel("Fecha", fuenteLbl, lblColor));
         fecha.setDateFormatString("dd/MM/yyyy");
+        panelIzq.add(fecha);
+        panelIzq.add(Box.createVerticalStrut(20));
 
-        add(fTitle);
-        add(fecha);
+        crearE = new JButton("Editar");
+        estilizarBoton(crearE, new Color(0, 200, 83));
+        crearE.addActionListener(e -> {
+            try {
+                edicion();
+            } catch (EventException ev) {
+                JOptionPane.showMessageDialog(this, ev.getMessage());
+            }
+        });
+        panelIzq.add(crearE);
+        panelIzq.add(Box.createVerticalStrut(10));
 
+        regresar = new JButton("Salir");
+        estilizarBoton(regresar, new Color(244, 67, 54));
+        regresar.addActionListener(e -> salir());
+        panelIzq.add(regresar);
 
+        // ====== PANEL DERECHO ======
+        JPanel panelDer = new JPanel(new BorderLayout());
+        panelDer.setBackground(Color.WHITE);
+        panelDer.setBorder(new EmptyBorder(15, 15, 15, 15));
+        panelDer.setPreferredSize(new Dimension(500, 0)); //
 
-        teamA.setEnabled(false);
-        teamB.setEnabled(false);
-        
-        add(tablaEvento, BorderLayout.CENTER);
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(Color.WHITE);
 
+        cod.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        nombre.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        tipe.setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+        infoPanel.add(cod);
+        infoPanel.add(nombre);
+        infoPanel.add(tipe);
+        infoPanel.add(Box.createVerticalStrut(15));
+
+        panelDer.add(infoPanel, BorderLayout.NORTH);
+
+        // Tabla personalizada
+        tablaEvento.setPreferredSize(new Dimension(400, 250)); // más pequeña
+        panelDer.add(new JScrollPane(tablaEvento), BorderLayout.CENTER);
+
+        // ====== ARMADO ======
+        add(panelIzq, BorderLayout.WEST);
+        add(panelDer, BorderLayout.CENTER);
+    }
+
+    private JLabel crearLabel(String txt, Font f, Color c) {
+        JLabel l = new JLabel(txt);
+        l.setFont(f);
+        l.setForeground(c);
+        return l;
+    }
+
+    private void estilizarBoton(JButton btn, Color bg) {
+        btn.setBackground(bg);
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setPreferredSize(new Dimension(120, 35));
     }
 
     private void edicion() throws EventException {
-        int code;
         int people;
+        int convers;
         double montR;
         String nomE = nombreEvent.getText().trim();
         String desc = descripcion.getText().trim();
-        String eqA = teamA.getText().trim();
-        String eqB = teamB.getText().trim();
-
+ 
         Date fechaReal = fecha.getDate();
-      
-        if (codigo.getText().isEmpty() || nombreEvent.getText().isEmpty() || descripcion.getText().isEmpty() || fecha.getDate() == null) {
-            throw new EventException("NO PUEDE DEJAR NINGUN CAMPO VACIO");
-        }
 
         if (!(codigo.getText().matches("\\d+") && renta.getText().matches("\\d+(\\.\\d+)?") && cantGente.getText().matches("\\d+"))) {
             throw new EventException("SOLO PUEDE USAR NÚMEROS POSITIVOS EN CÓDIGO, RENTA Y CANTIDAD DE GENTE");
         }
-
-        code = Integer.parseInt(codigo.getText().trim());
+       
         montR = Double.parseDouble(renta.getText().trim());
         people = Integer.parseInt(cantGente.getText().trim());
-
-        if (code <= 0) {
-            throw new EventException("El código debe ser mayor a 0.");
-        }
+        convers = 0;
+        
+       
         if (people <= 0) {
             throw new EventException("La cantidad de gente debe ser mayor a 0.");
         }
         if (montR <= 0) {
             throw new EventException("El monto de renta debe ser mayor a 0.");
         }
+        
+        if (eSelected instanceof EventoDeportivo && people > 20000) {
+            throw new EventException("Debido al cuidado de la grama, la cantidad de personas no debe de ser mas de 20000");
+        }
+        if (eSelected instanceof EventoMusical && people > 25000) {
+            throw new EventException("Debido al cuidado de la grama, la cantidad de personas no debe de ser mas de 25000");
+        }
+        if (eSelected instanceof EventoReligioso && people > 30000) {
+            throw new EventException("Debido al cuidado de la grama, la cantidad de personas no debe de ser mas de 30000");
+        }
 
+        if(eSelected instanceof EventoReligioso){
+             convers = Integer.parseInt(converts.getText().trim());
+    
+            if (convers < 0) {
+                throw new EventException("La cantidad de gente convertida no puede ser menor a 0.");
+            }
+        }
+    
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         if (sdf.format(fechaHoy.getTime()).equals(sdf.format(fechaReal.getTime()))) {
             throw new EventException("No puede dejar que la fehca sea  el mismo dia");
         }
-        
-        
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(fechaReal);
-        
-       
-        boolean fechaDisponible = uMan.getEventosTotales().stream().anyMatch(evento ->{
-            return (sdf.format(evento.getFecha().getTime()).equals(sdf.format(cal.getTime())) && !evento.isCancelado());
+
+        boolean fechaDisponible = uMan.getEventosTotales().stream().anyMatch(evento -> {
+            return (sdf.format(evento.getFecha().getTime()).equals(sdf.format(cal.getTime())) && !evento.isCancelado() && !evento.equals(eSelected));
         });
-                
-        if(fechaDisponible){
+
+        if (fechaDisponible) {
             throw new EventException("ERROR, NO SE PUEDE TENER MAS DE UN EVENTO EN LA MISMA FECHA");
         }
-                
-     
 
         eSelected.setDescripcion(desc);
         eSelected.setNombre(nomE);
+        if(fecha.getDate() == null){
+             eSelected.setFecha(eSelected.getFecha());
+        }else{
         eSelected.setFecha(cal);
+        }
         eSelected.setCantGente(people);
-        eSelected.setPrice(montR);
+        if(eSelected instanceof EventoReligioso){
+            EventoReligioso eRel = (EventoReligioso) eSelected;
+            eRel.setConvertidos(convers);
+            eSelected.setPrice(montR + 2000);
+        }else if(eSelected instanceof EventoMusical){
+             eSelected.setPrice(montR + (montR*0.3));
+        }else{
+             eSelected.setPrice(montR);
+        }
         JOptionPane.showMessageDialog(null, "Datos cambiados con exito");
         System.out.println(uMan.getEventosTotales());
-        
+
         eventCal.refrescarEventos();
     }
 
+  
 
     private void buscarEv() throws EventException {
         int code;
-        
+
         if (codigo.getText().isEmpty()) {
             throw new EventException("No se puede buscar el evento si deja el codigo vacio.");
         }
@@ -272,38 +277,43 @@ public class EditarEvent extends JFrame {
         code = Integer.parseInt(codigo.getText().trim());
 
         eSelected = uMan.buscarEvento(code, 0);
-        
-        cod.setText("Codigo: " + eSelected.getCodigo());
-        nombre.setText("Nombre: " + eSelected.getTypeEvent().toUpperCase());
-        if(!(eSelected instanceof EventoReligioso)){
-            tipe.setText("Tipo: " + eSelected.getBonus().toUpperCase());
-        }else{
-            tipe.setText("Tipo: NULO");
+        if (eSelected == null) {
+            throw new EventException("Evento no encontrado");
         }
+        if(eSelected.isCancelado()){
+           throw new EventException("No puede editar un evento que ha sido cancelado, pues queda inhabilidado");
+        }
+
+        // Actualizar labels
+        cod.setText("Código: " + eSelected.getCodigo());
+        nombre.setText("Evento: " + eSelected.getNombre());
+        tipe.setText("Categoría: " + eSelected.getTypeEvent());
         
+      
         nombreEvent.setText(eSelected.getNombre());
         descripcion.setText(eSelected.getDescripcion());
         cantGente.setText(String.valueOf(eSelected.getCantGente()));
         renta.setText(String.valueOf(eSelected.getMontoRenta()));
         fecha.setCalendar(eSelected.getFecha());
-     
-        tablaEvento.setVisible(true);
+
+        // Mostrar datos en la tabla
+          tablaEvento.setVisible(true);
         tablaEvento.cargarEvento(eSelected);
-        tablaEvento.setBounds(350, 150, 400, 320);
-        
-        if(eSelected instanceof EventoReligioso){
+        converts.setEnabled(false);
+        // === Si es religioso, centrar todo ===
+        if (eSelected instanceof EventoReligioso) {
+            converts.setEnabled(true);
             tablaEvento.setVisible(false);
-        }
-          
-    
+        } 
+        
+        revalidate();
+        repaint();
     }
 
     private void salir() {
         this.dispose();
-        MenuPrincipal menu = new MenuPrincipal();
-        menu.setVisible(true);
+        new AdminEventos().setVisible(true);
     }
-
-
+    
 
 }

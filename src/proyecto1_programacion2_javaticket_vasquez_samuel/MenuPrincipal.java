@@ -140,7 +140,6 @@ public class MenuPrincipal extends JFrame {
         }
     }
 
-
     public static void main(String[] args) {
         MenuPrincipal a = new MenuPrincipal();
         a.setVisible(true);

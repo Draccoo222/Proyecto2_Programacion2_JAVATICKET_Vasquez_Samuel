@@ -10,6 +10,7 @@ import com.toedter.calendar.JDateChooser;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.border.Border;
 /**
  *
  * @author unwir
@@ -26,13 +27,13 @@ public class CrearEvent extends JFrame {
     private JButton crearE;
     private JButton regresar;
     
-    private JTextField nombreEvent = new JTextField();
-    private JTextField descripcion = new JTextField(); 
-    private JTextField renta = new JTextField();
-    private JTextField codigo = new JTextField();
-    private JTextField cantGente = new JTextField();
-    private JTextField teamA = new JTextField();
-    private JTextField teamB = new JTextField();
+    private JTextField nombreEvent = new JTextField(20);
+    private JTextField descripcion = new JTextField(20); 
+    private JTextField renta = new JTextField(20);
+    private JTextField codigo = new JTextField(20);
+    private JTextField cantGente = new JTextField(20);
+    private JTextField teamA = new JTextField(20);
+    private JTextField teamB = new JTextField(20);
     
     private String[] opc = {"deportivo", "musical", "religioso"};
     
@@ -45,159 +46,156 @@ public class CrearEvent extends JFrame {
     
     private void initComps(){
        
-        setSize(780, 520);
+        setSize(900, 600);
         setLocationRelativeTo(null);
-        setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(new Color(0xA2463));
         
-        setBackground(Color.red);
+        JLabel l = new JLabel("CREAR EVENTO", SwingConstants.CENTER);
+        l.setForeground(Color.WHITE);
+        l.setFont(new Font("Serif", Font.BOLD, 50));
+        add(l, BorderLayout.NORTH);
         
+        // Panel para los campos de entrada
+        JPanel panelCreacion = new JPanel();
+        panelCreacion.setLayout(new GridBagLayout());
+        panelCreacion.setBackground(new Color(0xA2463));
         
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        JLabel l = new JLabel("Crear Evento");
-        l.setSize(100, 100);
-        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
-        l.setBounds(275, 20, 500, 50);
-        add(l);
+        // Tipo de Evento
+        JLabel typeTitle = new JLabel("Tipo de Evento");
+        typeTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        typeTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelCreacion.add(typeTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panelCreacion.add(type, gbc);
         
-        crearE = new JButton("Crear");
-        crearE.setForeground(Color.green);
-        crearE.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        crearE.setBounds(275, 430, 100, 30);
+        // Opcion de Evento (Deportivo/Musical)
+        JLabel bonTitle = new JLabel("Opcion De Evento");
+        bonTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        bonTitle.setForeground(Color.WHITE);
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        panelCreacion.add(bonTitle, gbc);
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        panelCreacion.add(bonus, gbc);
+
+        // Nombre de Evento
+        JLabel nomTitle = new JLabel("Nombre De Evento");
+        nomTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        nomTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panelCreacion.add(nomTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panelCreacion.add(nombreEvent, gbc);
         
-        crearE.addActionListener(e ->{
-            try{
-             creacion();
-            }catch(EventException ev){
-                JOptionPane.showMessageDialog(null, ev.getMessage());
-            }
-            
-        });
+        // Código
+        JLabel cTitle = new JLabel("Codigo");
+        cTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        cTitle.setForeground(Color.WHITE);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        panelCreacion.add(cTitle, gbc);
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        panelCreacion.add(codigo, gbc);
         
-        add(crearE);
+        // Descripción
+        JLabel uTitle = new JLabel("Descripcion");
+        uTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        uTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panelCreacion.add(uTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panelCreacion.add(descripcion, gbc);
         
-        regresar = new JButton("SALIR");
-        regresar.setForeground(Color.red);
-        regresar.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        regresar.setBounds(450, 430, 100, 30);
+        // Cantidad de Gente
+        JLabel genteTitle = new JLabel("Cantidad de Gente");
+        genteTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        genteTitle.setForeground(Color.WHITE);
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        panelCreacion.add(genteTitle, gbc);
+        gbc.gridx = 3;
+        gbc.gridy = 2;
+        panelCreacion.add(cantGente, gbc);
         
-        regresar.addActionListener(e ->{
-            salir();
-        });
-        
-        add(regresar);
-        
-          
-        JLabel nomTitle = new JLabel();
-        nomTitle.setText("Nombre De Evento");
-        nomTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        nomTitle.setBounds(300 + 125, 175 - 50, 200, 30);
-        
-        nombreEvent.setBounds(300 + 125, 200 - 50, 200, 20);
-        
-        add(nomTitle);
-        add(nombreEvent);
-        
-        
-        JLabel uTitle = new JLabel();
-        uTitle.setText("Descripcion");
-        uTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        uTitle.setBounds(300 - 125, 175, 200, 30);
-        
-        descripcion.setBounds(300 - 125, 200, 200, 20);
-        
-        add(uTitle);
-        add(descripcion);
-        
-        JLabel dato = new JLabel();
-        dato.setText("DATOS PARA EVENTO DEPORTIVO");
-        dato.setFont(new Font("Arial Black", Font.PLAIN, 20));
-        dato.setBounds(200, 170 + 110, 400, 50);
-        
-        add(dato);
-        
-        JLabel tAtitle = new JLabel();
-        tAtitle.setText("Nombre De Equipo A");
-        tAtitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        tAtitle.setBounds(300 + 125, 175 + 150, 200, 30);
-        
-        teamA.setBounds(300 + 125, 200 + 150, 200, 20);
-        
-        add(tAtitle);
-        add(teamA);
-        
-        
-        JLabel tBtitle = new JLabel();
-        tBtitle.setText("Nombre De Equipo B");
-        tBtitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        tBtitle.setBounds(300 - 125, 175 + 150, 200, 30);
-        
-        teamB.setBounds(300 - 125, 200 + 150, 200, 20);
-        
-        add(tBtitle);
-        add(teamB);
-        
-        
-        JLabel genteTitle = new JLabel();
-        genteTitle.setText("Cantidad de Gende");
-        genteTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        genteTitle.setBounds(300 + 125, 175, 200, 30);
-        
-        cantGente.setBounds(300 + 125, 200, 200, 20);
-        
-        add(genteTitle);
-        add(cantGente);
-        
-        JLabel renTitle = new JLabel();
-        renTitle.setText("Monto De Renta");
-        renTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        renTitle.setBounds(300 + 125, 175 + 50, 200, 30);
-        
-        renta.setBounds(300 + 125, 200 + 50, 200, 20);
-        
-        add(renTitle);
-        add(renta);
-        
-        JLabel cTitle = new JLabel();
-        cTitle.setText("Codigo");
-        cTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        cTitle.setBounds(300 - 125, 175 - 50, 200, 30);
-        
-        codigo.setBounds(300 - 125, 200 - 50, 200, 20);
-        
-        add(cTitle);
-        add(codigo);
-        
-        JLabel fTitle = new JLabel();
-        fTitle.setText("Fecha");
-        fTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        fTitle.setBounds(300 - 125, 175 + 50, 200, 30);
-        
-        fecha.setBounds(300 - 125, 200 + 50, 200, 20);
+        // Fecha
+        JLabel fTitle = new JLabel("Fecha");
+        fTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        fTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panelCreacion.add(fTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         fecha.setDateFormatString("dd/MM/yyyy");
+        panelCreacion.add(fecha, gbc);
         
-        add(fTitle);
-        add(fecha);
+        // Monto de Renta
+        JLabel renTitle = new JLabel("Monto De Renta");
+        renTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        renTitle.setForeground(Color.WHITE);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        panelCreacion.add(renTitle, gbc);
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        panelCreacion.add(renta, gbc);
         
-        JLabel typeTitle = new JLabel();
-        typeTitle.setText("Tipo de Evento");
-        typeTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        typeTitle.setBounds(300 - 125, 175 - 100, 200, 30);
+        // Datos para eventos deportivos
+        JLabel tAtitle = new JLabel("Nombre De Equipo A");
+        tAtitle.setFont(new Font("Serif", Font.BOLD, 18));
+        tAtitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panelCreacion.add(tAtitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        panelCreacion.add(teamA, gbc);
         
-        type.setBounds(300 - 125, 200 - 100, 200, 20);
+        JLabel tBtitle = new JLabel("Nombre De Equipo B");
+        tBtitle.setFont(new Font("Serif", Font.BOLD, 18));
+        tBtitle.setForeground(Color.WHITE);
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        panelCreacion.add(tBtitle, gbc);
+        gbc.gridx = 3;
+        gbc.gridy = 4;
+        panelCreacion.add(teamB, gbc);
         
-        add(typeTitle);
-        add(type);
+        add(panelCreacion, BorderLayout.CENTER);
         
-        JLabel bonTitle = new JLabel();
-        bonTitle.setText("Opcion De Evento");
-        bonTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        bonTitle.setBounds(300 + 125, 175 - 100, 200, 30);
+        // Panel de botones
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 20));
+        panelBotones.setBackground(new Color(0xA2463));
         
-        bonus.setBounds(300 + 125, 200 - 100, 200, 20);
+        Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+
+        crearE = new JButton("Crear");
+        crearE.setBackground(new Color(0xEBC926));
+        crearE.setFont(new Font("Serif", Font.BOLD, 18));
+        crearE.setBorder(botBor);
+        panelBotones.add(crearE);
         
-        add(bonTitle);
-        add(bonus);
+        regresar = new JButton("REGRESAR");
+        regresar.setBackground(new Color(0xEBC926));
+        regresar.setFont(new Font("Serif", Font.BOLD, 18));
+        regresar.setBorder(botBor);
+        panelBotones.add(regresar);
+        
+        add(panelBotones, BorderLayout.SOUTH);
         
         teamA.setEnabled(false);
         teamB.setEnabled(false);
@@ -217,6 +215,19 @@ public class CrearEvent extends JFrame {
                teamA.setEnabled(true);
                teamB.setEnabled(true);
             }
+        });
+        
+        crearE.addActionListener(e ->{
+            try{
+             creacion();
+            }catch(EventException ev){
+                JOptionPane.showMessageDialog(null, ev.getMessage());
+            }
+            
+        });
+        
+        regresar.addActionListener(e ->{
+            salir();
         });
     }
     
@@ -275,66 +286,66 @@ public class CrearEvent extends JFrame {
         
         
         switch (tipoE) {
-            case "deportivo":
+            case "deportivo" -> {
                 opcionalD = (Enumeraciones.Deporte) bonus.getSelectedItem();
                 if (people > 20000) throw new EventException("La cantidad de gente debe ser mayor a 0.");
                 if(opcionalD == null) throw new EventException("Debe seleccionar el tipo de Deporte");
-                break;
-            case "musical":
+            }
+            case "musical" -> {
                 opcionalM = (Enumeraciones.Musica) bonus.getSelectedItem();
                 if (people > 25000) throw new EventException("La cantidad de gente debe ser mayor a 0.");
                 if(opcionalM == null) throw new EventException("Debido a la grama solo se permite un maximo de 25,000 personas\npara un evento religioso.");
-                break;
-            case "religioso":
-               if (people > 30000) throw new EventException("Debido a la grama solo se permite un maximo de 30,000 personas\npara un evento religioso.");
-               break;
+            }
+            case "religioso" -> {
+                if (people > 30000) throw new EventException("Debido a la grama solo se permite un maximo de 30,000 personas\npara un evento religioso.");
+            }
         }
 
         switch (tipoE) {
-            case "deportivo":
+            case "deportivo" -> {
                 Evento dep = new EventoDeportivo(code, nomE, desc, cal, montR, people, opcionalD, eqA, eqB);
                 persona.getEventosCreados().add(dep);
                 uMan.getEventosTotales().add(dep);
                 System.out.println(uMan.listaEventosTotales(0));
-                break;
-            case "musical":
+            }
+            case "musical" -> {
                 Evento mus = new EventoMusical(code, nomE, desc, cal, montR, people, opcionalM);
                 persona.getEventosCreados().add(mus);
-                 uMan.getEventosTotales().add(mus);
+                uMan.getEventosTotales().add(mus);
                 System.out.println(uMan.listaEventosTotales(0));
-                break;
-            case "religioso":
+            }
+            case "religioso" -> {
                 Evento rel = new EventoReligioso(code, nomE, desc, cal, montR, people);
                 persona.getEventosCreados().add(rel);
                 uMan.getEventosTotales().add(rel);
                 System.out.println(uMan.listaEventosTotales(0));
-                break;
+            }
         }
+        
+        JOptionPane.showMessageDialog(null, "Evento creado con exito!");
+        salir();
         eventCal.refrescarEventos();
     }
     private void actualizarCombo(JComboBox<Object> combo, String tipo){
         combo.removeAllItems();
              switch(tipo){
-            case "deportivo":
+            case "deportivo" -> {
                 for (Enumeraciones.Deporte d: Enumeraciones.Deporte.values()) {
                     combo.addItem(d);
                 }
-                break;  
-            case "musical":
+            }
+            case "musical" -> {
                 for (Enumeraciones.Musica d: Enumeraciones.Musica.values()) {
                     combo.addItem(d);
                 }
-                break;
-            case "religioso":
-                combo.setEnabled(false);
-                break;
+            }
+            case "religioso" -> combo.setEnabled(false);
             }
     }
     
     private void salir(){
         this.dispose();
-        MenuPrincipal menu = new MenuPrincipal();
-        menu.setVisible(true);
+        new AdminEventos().setVisible(true);
     }
  
     

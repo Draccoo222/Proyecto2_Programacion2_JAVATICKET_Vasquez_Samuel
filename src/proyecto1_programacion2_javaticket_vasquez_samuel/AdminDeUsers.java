@@ -99,11 +99,13 @@ public class AdminDeUsers extends JFrame {
             elimU.setBounds(300, 300, 180, 35);
             
             elimU.addActionListener(e ->{
+                if(uMan.getUsuarios().size() > 2)
+                {
                 JComboBox<Usuario> selecU = new JComboBox<>();
                 ArrayList<Usuario> users = uMan.getUsuarios();
                 
                 for(Usuario u: users){
-                    if(!u.getUserName().equals("Admin")){
+                    if(!u.getUserName().equals("admin")){
                         selecU.addItem(u);
                     }                  
                 }
@@ -122,6 +124,9 @@ public class AdminDeUsers extends JFrame {
                    System.out.println("User Actual: " + uMan.getUserActualName() + " Rango: " 
                     + ((uMan.getUserActual() != null) ? uMan.getUserActual().getTipoUser() : "nulo"));
                }
+               }else{
+                    JOptionPane.showMessageDialog(null, "Para poder eliminar un usuario debe de haber mas de uno");
+                }
             });
             
             add(crearU);

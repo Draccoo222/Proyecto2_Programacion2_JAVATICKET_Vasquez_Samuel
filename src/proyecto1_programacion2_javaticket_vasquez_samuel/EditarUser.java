@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import javax.swing.border.Border;
 /**
  *
  * @author unwir
@@ -16,11 +17,11 @@ public class EditarUser extends JFrame {
     private JButton login;
     private JButton regresar;
     
-    private JTextField nombreComp = new JTextField();
-    private JTextField uName = new JTextField();
+    private JTextField nombreComp = new JTextField(22);
+    private JTextField uName = new JTextField(22);
     
-    private JTextField eD = new JTextField();
-    private JTextField passW = new JTextField();
+    private JTextField eD = new JTextField(22);
+    private JTextField passW = new JTextField(22);
     
     private String[] opc = {"admin", "limitados", "contenidos"};
     
@@ -28,130 +29,135 @@ public class EditarUser extends JFrame {
     
     private JComboBox<Usuario> ola;
     
-    
     public EditarUser(){
     
         initComps();
     }
     
     
-    private void initComps(){
+  private void initComps(){
         uMan = UserManage.getInstance();
         setSize(780, 520);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
+        getContentPane().setBackground(new Color(0xA2463));
         
-        setBackground(Color.red);
-        
-        JLabel l = new JLabel("Editar Usuario");
-        l.setSize(100, 100);
-        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
-        l.setBounds(275, 30, 500, 50);
+        JLabel l = new JLabel("EDITAR USUARIO");
+        l.setForeground(Color.WHITE);
+        l.setFont(new Font("Serif", Font.BOLD, 50));
+        l.setBounds(190, 30, 500, 50);
         add(l);
         
-        login = new JButton("Creacion");
-        login.setForeground(Color.green);
-        login.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        login.setBounds(275, 435, 100, 30);
+        // Panel para los campos de entrada
+        JPanel panelEditar = new JPanel();
+        panelEditar.setLayout(new GridBagLayout());
+        panelEditar.setBackground(new Color(0xA2463));
+        panelEditar.setBounds(150, 100, 500, 300);
         
-        login.addActionListener(e ->{
-            creacion();
-        });
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        add(login);
+        // Usuario a Editar
+        JLabel selecU = new JLabel("Usuario");
+        selecU.setFont(new Font("Serif", Font.BOLD, 18));
+        selecU.setForeground(Color.WHITE);
         
-        regresar = new JButton("SALIR");
-        regresar.setForeground(Color.red);
-        regresar.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        regresar.setBounds(450, 435, 100, 30);
-        
-        regresar.addActionListener(e ->{
-            salir();
-        });
-        
-        add(regresar);
-        
-          
-        JLabel nomTitle = new JLabel();
-        nomTitle.setText("Nombre Completo");
-        nomTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        nomTitle.setBounds(300, 175, 200, 30);
-        
-        nombreComp.setBounds(300, 200, 200, 20);
-        
-        add(nomTitle);
-        add(nombreComp);
-        
-    
-        JLabel uTitle = new JLabel();
-        uTitle.setText("Nombre de Usuario");
-        uTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        uTitle.setBounds(300, 175 + 50, 200, 30);
-        
-        uName.setBounds(300, 200 + 50, 200, 20);
-        
-        add(uTitle);
-        add(uName);
-        
-        JLabel eTitle = new JLabel();
-        eTitle.setText("Edad");
-        eTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        eTitle.setBounds(300, 175 + 100, 200, 30);
-        
-        eD.setBounds(300, 200 + 100, 200, 20);
-        
-        add(eTitle);
-        add(eD);
-        
-        JLabel passWTitle = new JLabel();
-        passWTitle.setText("Contraseña");
-        passWTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        passWTitle.setBounds(300, 175 + 150, 200, 30);
-        
-        passW.setBounds(300, 200 + 150, 200, 20);
-        
-        add(passWTitle);
-        add(passW);
-        
-        JLabel typeTitle = new JLabel();
-        typeTitle.setText("Tipo de User");
-        typeTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        typeTitle.setBounds(300, 175 + 200, 200, 30);
-        
-        type.setBounds(300, 200 + 200, 200, 20);
-        
-        add(typeTitle);
-        add(type);
-        
-        
-         ArrayList<Usuario> users = uMan.getUsuarios();
-        
+        ArrayList<Usuario> users = uMan.getUsuarios();
         ola = new JComboBox<>();
         
-        for(Usuario u: users){
+        for(Usuario u : users){
             if(!u.getNombreCompleto().equals("Administrador")){
                 ola.addItem(u);
             }
         }
         
-        JLabel selecU = new JLabel();
-        selecU.setText("Usuario");
-        selecU.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        selecU.setBounds(300, 175 - 50, 200, 30);
-       
-        ola.setBounds(300, 200 - 50, 200, 20);
-        add(selecU);
-        add(ola);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelEditar.add(selecU, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panelEditar.add(ola, gbc);
+
+        // Nombre Completo
+        JLabel nomTitle = new JLabel("Nombre Completo");
+        nomTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        nomTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panelEditar.add(nomTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panelEditar.add(nombreComp, gbc);
         
-    
+        // Nombre de Usuario
+        JLabel uTitle = new JLabel("Nombre de Usuario");
+        uTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        uTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panelEditar.add(uTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panelEditar.add(uName, gbc);
         
+        // Edad
+        JLabel eTitle = new JLabel("Edad");
+        eTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        eTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panelEditar.add(eTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        panelEditar.add(eD, gbc);
         
-         for(Component b: getContentPane().getComponents()){
-            if(b != ola && !(b instanceof JLabel) &&  b!= regresar){
+        // Contraseña
+        JLabel passWTitle = new JLabel("Contraseña");
+        passWTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        passWTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panelEditar.add(passWTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        panelEditar.add(passW, gbc);
+        
+        // Tipo de Usuario
+        JLabel typeTitle = new JLabel("Tipo de Usuario");
+        typeTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        typeTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        panelEditar.add(typeTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        panelEditar.add(type, gbc);
+        
+        add(panelEditar);
+        
+        // Botones
+        Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+
+        JButton loginBtn = new JButton("EDITAR");
+        loginBtn.setBackground(new Color(0xEBC926));
+        loginBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        loginBtn.setBorder(botBor);
+        loginBtn.setBounds(200, 420, 180, 35);
+        add(loginBtn);
+        
+        JButton regresarBtn = new JButton("REGRESAR");
+        regresarBtn.setBackground(new Color(0xEBC926));
+        regresarBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        regresarBtn.setBorder(botBor);
+        regresarBtn.setBounds(400, 420, 180, 35);
+        add(regresarBtn);
+        
+        // Habilitar/Deshabilitar campos
+        for(Component b : panelEditar.getComponents()){
+            if(b != ola && !(b instanceof JLabel)){
                  b.setEnabled(false);
             }
-             
         }
        
         ola.addActionListener(new ActionListener(){
@@ -159,14 +165,16 @@ public class EditarUser extends JFrame {
             public void actionPerformed(ActionEvent e){
                 Object seleccionado = ola.getSelectedItem();
                 boolean hab = (seleccionado != null);
-                    for(Component b: getContentPane().getComponents()){
-                        if(b != ola && !(b instanceof JLabel) && b!= regresar){
-                            b.setEnabled(hab);
-                        }
+                for(Component b : panelEditar.getComponents()){
+                    if(b != ola && !(b instanceof JLabel)){
+                        b.setEnabled(hab);
                     }
+                }
             }
         });
-        
+
+        loginBtn.addActionListener(e -> creacion());
+        regresarBtn.addActionListener(e -> salir());
     }
     
     private void creacion(){   
@@ -208,13 +216,22 @@ public class EditarUser extends JFrame {
                             + "en la contraseña");
              }
              
+            boolean coinciden = (uMan.getUserActual() == userSelect);
+             
              
             ArrayList<Evento> mantenerList = userSelect.getEventosCreados();
             uMan.getUsuarios().remove(userSelect);
             uMan.insert(index, tipo, edad, nombreC, userN, pass);
             uMan.getUsuarios().get(index).setEventosCreados(mantenerList);
             JOptionPane.showMessageDialog(null, "Usuario editado con exito!");
-            salir();
+            if(coinciden){
+                JOptionPane.showMessageDialog(null, "Atencion!, al haber editado sus propios datos, debera ingresar de nuevo");
+                uMan.cerrarSesion();
+                this.dispose();
+                new MenuPrincipal().setVisible(true);
+            }else{
+                salir();
+            }
             System.out.println(uMan.listaUsers(uMan.cantUsers() - 1));
             System.out.println(uMan.getUsuarios().get(index).getEventosCreados());
           
@@ -227,8 +244,7 @@ public class EditarUser extends JFrame {
    
     private void salir(){
         this.dispose();
-        MenuPrincipal menu = new MenuPrincipal();
-        menu.setVisible(true);
+        new AdminDeUsers().setVisible(true);
     }
  
 

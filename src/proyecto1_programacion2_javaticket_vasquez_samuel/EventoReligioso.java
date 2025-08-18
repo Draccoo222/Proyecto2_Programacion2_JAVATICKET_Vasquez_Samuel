@@ -15,7 +15,7 @@ public class EventoReligioso extends Evento {
    
 
     public EventoReligioso(int codigo, String nombre, String descripcion, Calendar fecha, double montoRenta, int cantGente) {
-        super(codigo, nombre, descripcion, fecha, montoRenta, cantGente);
+        super(codigo, nombre, descripcion, fecha, montoRenta + 2000, cantGente);
     }
     
     

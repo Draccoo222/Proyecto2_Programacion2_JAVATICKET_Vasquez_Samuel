@@ -5,8 +5,12 @@
 package proyecto1_programacion2_javaticket_vasquez_samuel;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.Border;
 /**
  *
  * @author unwir
@@ -14,6 +18,7 @@ import javax.swing.*;
 public class Reportes extends JFrame {
      private UserManage uMan;
    private JButton salir;
+   private JPanel buttonPanel;
    
     public Reportes(){
          initComp();
@@ -27,86 +32,115 @@ public class Reportes extends JFrame {
         setSize(780, 520);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
+        getContentPane().setBackground(new Color(0xA2463));
         
-        JLabel l = new JLabel("REPORTES");
-        l.setSize(100, 100);
-        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
-        l.setBounds(240, 40, 500, 50);
+        JLabel l = new JLabel("REPORTES", SwingConstants.CENTER);
+        l.setForeground(Color.WHITE);
+        l.setFont(new Font("Serif", Font.BOLD, 50));
+        l.setBounds(150, 40, 500, 50);
         add(l);
-        
         
         System.out.println("User Actual: " + uMan.getUserActualName() + " Rango: " 
           + ((uMan.getUserActual() != null) ? uMan.getUserActual().getTipoUser() : "nulo"));
+     
+    }
+    
+    public void panelAdmin(){
+        
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridBagLayout());
+        buttonPanel.setBackground(new Color(0xA2463));
+        buttonPanel.setBounds(200, 150, 400, 250);
+        add(buttonPanel);
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+        
+        JButton eventosRealizadosBtn = new JButton("Eventos Realizados");
+        eventosRealizadosBtn.setBackground(new Color(0xEBC926));
+        eventosRealizadosBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        eventosRealizadosBtn.setBorder(botBor);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        buttonPanel.add(eventosRealizadosBtn, gbc);
+
+        JButton eventosFuturosBtn = new JButton("Eventos Futuros");
+        eventosFuturosBtn.setBackground(new Color(0xEBC926));
+        eventosFuturosBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        eventosFuturosBtn.setBorder(botBor);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        buttonPanel.add(eventosFuturosBtn, gbc);
+        
+        JButton reporteVentasBtn = new JButton("Eventos Cancelados");
+        reporteVentasBtn.setBackground(new Color(0xEBC926));
+        reporteVentasBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        reporteVentasBtn.setBorder(botBor);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        buttonPanel.add(reporteVentasBtn, gbc);
+        
+        JButton eventosPorFechaBtn = new JButton("Eventos Por Fecha");
+        eventosPorFechaBtn.setBackground(new Color(0xEBC926));
+        eventosPorFechaBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        eventosPorFechaBtn.setBorder(botBor);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        buttonPanel.add(eventosPorFechaBtn, gbc);
+        
+        JButton verPerfilBtn = new JButton("Ver Perfil");
+        verPerfilBtn.setBackground(new Color(0xEBC926));
+        verPerfilBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        verPerfilBtn.setBorder(botBor);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        buttonPanel.add(verPerfilBtn, gbc);
         
         salir = new JButton("SALIR");
-        salir.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        salir.setBounds(320, 180 + 120, 140, 30);
-        add(salir);
+        salir.setBackground(new Color(0xEBC926));
+        salir.setFont(new Font("Serif", Font.BOLD, 18));
+        salir.setBorder(botBor);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        buttonPanel.add(salir, gbc);
+
+        eventosRealizadosBtn.addActionListener(e -> {
+            this.dispose();
+            EventosRealizados a = new EventosRealizados();
+            a.setVisible(true);
+        });
         
+        eventosFuturosBtn.addActionListener(e -> {
+            this.dispose();
+            EventosFuturos a = new EventosFuturos();
+            a.setVisible(true);
+        });
+        
+        reporteVentasBtn.addActionListener(e -> {
+            this.dispose();
+            EventosCancelados a = new EventosCancelados();
+            a.setVisible(true);
+        });
+        
+        eventosPorFechaBtn.addActionListener(e -> {
+            this.dispose();
+            EventosPorRango l = new EventosPorRango();
+            l.setVisible(true);
+        });
+        
+        verPerfilBtn.addActionListener(e -> {
+            // Lógica para ver el perfil del usuario
+            JOptionPane.showMessageDialog(null, "Funcionalidad para ver perfil.");
+        });
+
         salir.addActionListener(e -> {
              this.dispose();
              MenuPrincipal a = new MenuPrincipal();
              a.setVisible(true);
         });
-     
     }
     
-    public void panelAdmin(){
-      //  if(uMan.getUserActual() != null && uMan.getUserActual().getTipoUser().equals("admin")){
-            JButton crearU = new JButton("Eventos Realizados");
-            JButton editarU = new JButton("Eventos Futuros");
-            JButton elimU = new JButton("Borrar Usuario");
-            
-            JButton[] opcAdmin = {crearU, editarU, elimU};
-            
-            crearU.addActionListener(e -> {
-            this.dispose();
-             CreateUser a = new CreateUser();
-             a.setVisible(true);
-            });
-            
-            editarU.addActionListener(e -> {
-                    this.dispose();
-                    EventosFuturos a = new EventosFuturos();
-                    a.setVisible(true);
-            });
-
-            crearU.setBounds(320, 180, 140, 30);
-            editarU.setBounds(320, 180 + 40, 140, 30);
-            elimU.setBounds(320, 180 + 80, 140, 30);
-            
-            elimU.addActionListener(e ->{
-                JComboBox<Usuario> selecU = new JComboBox<>();
-                ArrayList<Usuario> users = uMan.getUsuarios();
-                
-                for(Usuario u: users){
-                    if(!u.getUserName().equals("Admin")){
-                        selecU.addItem(u);
-                    }                  
-                }
-
-               int result = JOptionPane.showConfirmDialog(
-                       null, 
-                       selecU,
-                       "Seleccione Que Usuario Desea Eliminar!",
-                       JOptionPane.OK_CANCEL_OPTION
-               );
-               
-               if(result == JOptionPane.OK_OPTION){
-                   Usuario byeU = (Usuario) selecU.getSelectedItem();
-                   uMan.getUsuarios().remove(byeU);
-                   JOptionPane.showMessageDialog(null, "Usuario Eliminado Exitosamente!");
-                   System.out.println("User Actual: " + uMan.getUserActualName() + " Rango: " 
-                    + ((uMan.getUserActual() != null) ? uMan.getUserActual().getTipoUser() : "nulo"));
-               }
-            });
-            
- 
-            for(JButton bot: opcAdmin){
-                   bot.setFont(new Font("Arial Black", Font.PLAIN, 12));
-                   add(bot);   
-               }
-        }   
-    //}
 }

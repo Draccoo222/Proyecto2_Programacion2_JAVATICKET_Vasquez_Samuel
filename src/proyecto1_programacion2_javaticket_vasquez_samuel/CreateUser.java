@@ -6,6 +6,7 @@ package proyecto1_programacion2_javaticket_vasquez_samuel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.Border;
 /**
  *
  * @author unwir
@@ -15,11 +16,11 @@ public class CreateUser extends JFrame {
     private JButton login;
     private JButton regresar;
     
-    private JTextField nombreComp = new JTextField();
-    private JTextField uName = new JTextField();
+    private JTextField nombreComp = new JTextField(22);
+    private JTextField uName = new JTextField(22);
     
-    private JTextField eD = new JTextField();
-    private JTextField passW = new JTextField();
+    private JTextField eD = new JTextField(22);
+    private JTextField passW = new JTextField(22);
     
     private String[] opc = {"admin", "limitados", "contenidos"};
     
@@ -31,99 +32,114 @@ public class CreateUser extends JFrame {
     }
     
     
-    private void initComps(){
+ private void initComps(){
         uMan = UserManage.getInstance();
         setSize(780, 520);
         setLocationRelativeTo(null);
         setLayout(null);
-        getContentPane().setBackground(new Color(0xaec3fc));
+        getContentPane().setBackground(new Color(0xA2463));
         
-        setBackground(Color.red);
-        
-        JLabel l = new JLabel("Crear Usuario");
-        l.setSize(100, 100);
-        l.setFont(new Font("Arial Black", Font.PLAIN, 35));
-        l.setBounds(275, 30, 500, 50);
+        JLabel l = new JLabel("CREAR USUARIO");
+        l.setForeground(Color.WHITE);
+        l.setFont(new Font("Serif", Font.BOLD, 50));
+        l.setBounds(190, 30, 500, 50);
         add(l);
         
-        login = new JButton("Creacion");
-        login.setForeground(Color.green);
-        login.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        login.setBounds(275, 400, 100, 30);
+        // Panel para los campos de entrada
+        JPanel panelCreacion = new JPanel();
+        panelCreacion.setLayout(new GridBagLayout());
+        panelCreacion.setBackground(new Color(0xA2463));
+        panelCreacion.setBounds(150, 100, 500, 300);
         
-        login.addActionListener(e ->{
-            try{   
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Nombre Completo
+        JLabel nomTitle = new JLabel("Nombre Completo");
+        nomTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        nomTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelCreacion.add(nomTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panelCreacion.add(nombreComp, gbc);
+        
+        // Nombre de Usuario
+        JLabel uTitle = new JLabel("Nombre de Usuario");
+        uTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        uTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panelCreacion.add(uTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panelCreacion.add(uName, gbc);
+        
+        // Edad
+        JLabel eTitle = new JLabel("Edad");
+        eTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        eTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panelCreacion.add(eTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panelCreacion.add(eD, gbc);
+        
+        // Contraseña
+        JLabel passWTitle = new JLabel("Contraseña");
+        passWTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        passWTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panelCreacion.add(passWTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        panelCreacion.add(passW, gbc);
+        
+        // Tipo de Usuario
+        JLabel typeTitle = new JLabel("Tipo de Usuario");
+        typeTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        typeTitle.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panelCreacion.add(typeTitle, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        panelCreacion.add(type, gbc);
+        
+        add(panelCreacion);
+        
+        // Botones
+        Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+
+        JButton creacionBtn = new JButton("CREAR");
+        creacionBtn.setBackground(new Color(0xEBC926));
+        creacionBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        creacionBtn.setBorder(botBor);
+        creacionBtn.setBounds(200, 420, 180, 35);
+        add(creacionBtn);
+        
+        JButton regresarBtn = new JButton("REGRESAR");
+        regresarBtn.setBackground(new Color(0xEBC926));
+        regresarBtn.setFont(new Font("Serif", Font.BOLD, 18));
+        regresarBtn.setBorder(botBor);
+        regresarBtn.setBounds(400, 420, 180, 35);
+        add(regresarBtn);
+
+        creacionBtn.addActionListener(e -> {
+            try {   
                 creacion();
-            }catch(UserException em){
+            } catch(UserException em) {
                JOptionPane.showMessageDialog(null, em.getMessage()); 
             } 
         });
         
-        add(login);
-        
-        regresar = new JButton("SALIR");
-        regresar.setForeground(Color.red);
-        regresar.setFont(new Font("Arial Black", Font.PLAIN, 12));
-        regresar.setBounds(450, 400, 100, 30);
-        
-        regresar.addActionListener(e ->{
+        regresarBtn.addActionListener(e -> {
             salir();
         });
-        
-        add(regresar);
-        
-          
-        JLabel nomTitle = new JLabel();
-        nomTitle.setText("Nombre Completo");
-        nomTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        nomTitle.setBounds(300, 175 - 50, 200, 30);
-        
-        nombreComp.setBounds(300, 200 - 50, 200, 20);
-        
-        add(nomTitle);
-        add(nombreComp);
-        
-        
-        JLabel uTitle = new JLabel();
-        uTitle.setText("Nombre de Usuario");
-        uTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        uTitle.setBounds(300, 175, 200, 30);
-        
-        uName.setBounds(300, 200, 200, 20);
-        
-        add(uTitle);
-        add(uName);
-        
-        JLabel eTitle = new JLabel();
-        eTitle.setText("Edad");
-        eTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        eTitle.setBounds(300, 175 + 50, 200, 30);
-        
-        eD.setBounds(300, 200 + 50, 200, 20);
-        
-        add(eTitle);
-        add(eD);
-        
-        JLabel passWTitle = new JLabel();
-        passWTitle.setText("Contraseña");
-        passWTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        passWTitle.setBounds(300, 175 + 100, 200, 30);
-        
-        passW.setBounds(300, 200 + 100, 200, 20);
-        
-        add(passWTitle);
-        add(passW);
-        
-        JLabel typeTitle = new JLabel();
-        typeTitle.setText("Tipo de User");
-        typeTitle.setFont(new Font("Arial Black", Font.PLAIN, 14));
-        typeTitle.setBounds(300, 175 + 150, 200, 30);
-        
-        type.setBounds(300, 200 + 150, 200, 20);
-        
-        add(typeTitle);
-        add(type);
-     
     }
     
     private void creacion() throws UserException { 
@@ -144,7 +160,7 @@ public class CreateUser extends JFrame {
         if (nombreComp.getText().isBlank() || passW.getText().isBlank() || uName.getText().isBlank()) {
             throw new UserException("PORFAVOR LLENE TODOS LOS CAMPOS SOLICITADOS");
         }
-      
+   
         if (!uMan.confirmarContra(pass)) {
             throw new UserException("Porfavor incluir caracteres especiales, numeros, mayusculas y minusculas "
                     + "en la contraseña");
@@ -163,6 +179,8 @@ public class CreateUser extends JFrame {
 
         edad = Integer.parseInt(eD.getText());
 
+        if(edad < 5 || edad > 120) throw new UserException("Porfavor introduzca una edad valida dentro del rango de 5 a 120");
+      
         uMan.crearUser(tipo, edad, nombreC, userN, pass);
         JOptionPane.showMessageDialog(null, "Usuario creado con exito!");
         salir();
@@ -172,8 +190,7 @@ public class CreateUser extends JFrame {
     
     private void salir(){
         this.dispose();
-        MenuPrincipal menu = new MenuPrincipal();
-        menu.setVisible(true);
+        new AdminDeUsers().setVisible(true);
     }
 
 }

@@ -104,7 +104,7 @@ public final class UserManage {
 
     public void addAdmin() {
         if (!yaExiste) {
-            usuarios.add(new Admin(1, "Administrador", "Admin", "supersecreto"));
+            usuarios.add(new Admin(1, "Administrador", "admin", "supersecreto"));
             yaExiste = true;
         }
     }

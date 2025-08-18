@@ -88,6 +88,10 @@ public abstract class Evento {
     public void setFecha(Calendar fecha) {
         this.fecha = fecha;
     }
+    
+    public void indebnizar(){
+        montoRenta = 0.5*montoRenta;
+    }
 
   
     abstract public String getBonus();
