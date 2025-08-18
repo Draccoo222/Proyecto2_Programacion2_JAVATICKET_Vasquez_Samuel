@@ -20,6 +20,7 @@ public class MenuPrincipal extends JFrame {
     private JButton login;
     private JButton crearE;
     private JButton cerrarLog;
+    private JButton verEvent;
 
     public MenuPrincipal() {
         initComp();
@@ -84,16 +85,32 @@ public class MenuPrincipal extends JFrame {
     }
 
    public void panelAdmin() {
-        if(uMan.getUserActual() != null){
-            Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
-            
+       Border botBor = BorderFactory.createLineBorder(new Color(0xB89E2E), 4);
+       
+              
+                
+        if(uMan.getUserActual() != null){  
+               verEvent = new JButton("Ver Evento");
+                verEvent.setBackground(new Color(0xEBC926));
+                verEvent.setFont(new Font("Serif", Font.BOLD, 18));
+                verEvent.setBorder(botBor);
+                add(verEvent);
+                
+                verEvent.addActionListener(e -> {
+                new VerEvento().setVisible(true);
+                
+                });
+                
+                       
+                
+                
             if (uMan.getUserActual() instanceof Admin) {
                 JButton adminPan = new JButton("User Manage");
                 adminPan.setBackground(new Color(0xEBC926));
                 adminPan.setFont(new Font("Serif", Font.BOLD, 18));
                 adminPan.setBorder(botBor);
                 adminPan.setBounds(300, 200, 200, 40);
-
+                
                 adminPan.addActionListener(e -> {
                     this.dispose();
                     AdminDeUsers aUser = new AdminDeUsers();
@@ -117,9 +134,11 @@ public class MenuPrincipal extends JFrame {
                 if(uMan.getUserActual() instanceof Admin){
                     adminEventPan.setBounds(300, 250, 200, 40);
                     repors.setBounds(300, 300, 200, 40);
+                    verEvent.setBounds(300, 350, 200, 40);
                 } else {
                     adminEventPan.setBounds(300, 200, 200, 40);
                     repors.setBounds(300, 250, 200, 40);
+                    verEvent.setBounds(300, 300, 200, 40);
                 }
                 
                 adminEventPan.addActionListener(e -> {
@@ -136,6 +155,8 @@ public class MenuPrincipal extends JFrame {
                 
                 add(repors);   
                 add(adminEventPan);   
+            }else{
+                verEvent.setBounds(300, 250, 200, 40);
             }
         }
     }

@@ -60,6 +60,14 @@ public class EventosFuturos extends JFrame {
         add(panelEventos);
         add(panelStats);
         add(salir);
+        
+         
+        salir.addActionListener(e->{
+            this.dispose();
+            new Reportes().setVisible(true);
+        
+        });
+        
 
     }
    

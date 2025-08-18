@@ -309,7 +309,6 @@ public class EditarEvent extends JFrame {
         revalidate();
         repaint();
     }
-
     private void salir() {
         this.dispose();
         new AdminEventos().setVisible(true);

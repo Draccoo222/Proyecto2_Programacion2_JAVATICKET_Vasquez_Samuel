@@ -47,6 +47,11 @@ public class EventosCancelados extends JFrame {
         lal.setFont(new Font("Serif", Font.BOLD, 40));
         lal.setBounds(230, -50, 500, 200);    
 
+        JButton salir = new JButton("Salir");
+        salir.setBackground(new Color(0xEBC926));
+        salir.setFont(new Font("Serif", Font.BOLD, 16));
+        salir.setBounds(30, 430, 100, 30); 
+        
         JPanel panelEventos = crearPanelEventosListado(uMan, contadores, montos);
         JPanel panelStats = crearPanelEventosStats(contadores, montos);
 
@@ -56,7 +61,15 @@ public class EventosCancelados extends JFrame {
         add(lal);
         add(panelEventos);
         add(panelStats);
-
+        add(salir);
+        
+         
+        salir.addActionListener(e->{
+            this.dispose();
+            new Reportes().setVisible(true);
+        
+        });
+       
     }
    
     public JPanel crearPanelEventosListado(UserManage userManager, int[] contadores, double[] montos) {

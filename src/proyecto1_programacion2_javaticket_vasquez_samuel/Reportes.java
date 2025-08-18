@@ -50,7 +50,7 @@ public class Reportes extends JFrame {
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         buttonPanel.setBackground(new Color(0xA2463));
-        buttonPanel.setBounds(200, 150, 400, 250);
+        buttonPanel.setBounds(100, 50, 600, 500);
         add(buttonPanel);
         
         GridBagConstraints gbc = new GridBagConstraints();
@@ -64,7 +64,7 @@ public class Reportes extends JFrame {
         eventosRealizadosBtn.setFont(new Font("Serif", Font.BOLD, 18));
         eventosRealizadosBtn.setBorder(botBor);
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         buttonPanel.add(eventosRealizadosBtn, gbc);
 
         JButton eventosFuturosBtn = new JButton("Eventos Futuros");
@@ -72,7 +72,7 @@ public class Reportes extends JFrame {
         eventosFuturosBtn.setFont(new Font("Serif", Font.BOLD, 18));
         eventosFuturosBtn.setBorder(botBor);
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         buttonPanel.add(eventosFuturosBtn, gbc);
         
         JButton reporteVentasBtn = new JButton("Eventos Cancelados");
@@ -80,7 +80,7 @@ public class Reportes extends JFrame {
         reporteVentasBtn.setFont(new Font("Serif", Font.BOLD, 18));
         reporteVentasBtn.setBorder(botBor);
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         buttonPanel.add(reporteVentasBtn, gbc);
         
         JButton eventosPorFechaBtn = new JButton("Eventos Por Fecha");
@@ -88,7 +88,7 @@ public class Reportes extends JFrame {
         eventosPorFechaBtn.setFont(new Font("Serif", Font.BOLD, 18));
         eventosPorFechaBtn.setBorder(botBor);
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         buttonPanel.add(eventosPorFechaBtn, gbc);
         
         JButton verPerfilBtn = new JButton("Ver Perfil");
@@ -96,7 +96,7 @@ public class Reportes extends JFrame {
         verPerfilBtn.setFont(new Font("Serif", Font.BOLD, 18));
         verPerfilBtn.setBorder(botBor);
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         buttonPanel.add(verPerfilBtn, gbc);
         
         salir = new JButton("SALIR");
@@ -104,7 +104,7 @@ public class Reportes extends JFrame {
         salir.setFont(new Font("Serif", Font.BOLD, 18));
         salir.setBorder(botBor);
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         buttonPanel.add(salir, gbc);
 
         eventosRealizadosBtn.addActionListener(e -> {
@@ -132,8 +132,8 @@ public class Reportes extends JFrame {
         });
         
         verPerfilBtn.addActionListener(e -> {
-            // Lógica para ver el perfil del usuario
-            JOptionPane.showMessageDialog(null, "Funcionalidad para ver perfil.");
+            this.dispose();
+            new VerPerfil().setVisible(true);
         });
 
         salir.addActionListener(e -> {
@@ -141,6 +141,11 @@ public class Reportes extends JFrame {
              MenuPrincipal a = new MenuPrincipal();
              a.setVisible(true);
         });
+    }
+    
+    public static void main(String[] args){
+        new Reportes().setVisible(true);
+    
     }
     
 }

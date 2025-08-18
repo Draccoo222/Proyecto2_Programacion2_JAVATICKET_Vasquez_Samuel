@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * @author unwir
  */
 public class EventosPorRango extends JFrame {
+
     private final UserManage userManager;
     private final JTable tablaEventos;
     private final DefaultTableModel modeloEventos;
@@ -54,18 +55,16 @@ public class EventosPorRango extends JFrame {
         btnFiltrar.setBackground(new Color(70, 130, 180));
         btnFiltrar.setForeground(Color.WHITE);
         btnFiltrar.setFocusPainted(false);
-       
-    
+
         btnFiltrar.addActionListener(e -> cargarEventos());
-        
-        
+
         JButton btnSalir = new JButton("Salir");
         btnSalir.setBackground(new Color(70, 130, 180));
         btnSalir.setForeground(Color.WHITE);
         btnSalir.setFocusPainted(false);
         btnSalir.addActionListener(e -> {
             this.dispose();
-            new AdminEventos().setVisible(true);
+            new Reportes().setVisible(true);
         });
 
         panelSuperior.add(lblInicio);
@@ -76,7 +75,6 @@ public class EventosPorRango extends JFrame {
         panelSuperior.add(btnSalir);
 
         add(panelSuperior, BorderLayout.NORTH);
-        
 
         // ==== TABLA DE EVENTOS ====
         String[] columnas = {"TIPO", "NOMBRE", "MONTO", "FECHA", "ESTADO"};
@@ -135,30 +133,25 @@ public class EventosPorRango extends JFrame {
                 String etiquetaMonto = evento.isCancelado() ? "Multa" : "Renta";
 
                 modeloEventos.addRow(new Object[]{
-                        tipo,
-                        evento.getNombre(),
-                        etiquetaMonto + ": " + evento.getMontoRenta(),
-                        sdf.format(fechaEvento),
-                        estado
+                    tipo,
+                    evento.getNombre(),
+                    etiquetaMonto + ": " + evento.getMontoRenta(),
+                    sdf.format(fechaEvento),
+                    estado
                 });
 
-                if (evento instanceof EventoDeportivo) deportivos++;
-                else if (evento instanceof EventoMusical) musicales++;
-                else if (evento instanceof EventoReligioso) religiosos++;
+                if (evento instanceof EventoDeportivo) {
+                    deportivos++;
+                } else if (evento instanceof EventoMusical) {
+                    musicales++;
+                } else if (evento instanceof EventoReligioso) {
+                    religiosos++;
+                }
             }
         }
 
         lblEstadisticas.setText(String.format("Estadísticas: Deportivos=%d | Musicales=%d | Religiosos=%d",
                 deportivos, musicales, religiosos));
     }
-    
-      public static void main(String[] args){
-        new EventosPorRango().setVisible(true);
-    
-    }
-    
 
-  
-
-    
 }
