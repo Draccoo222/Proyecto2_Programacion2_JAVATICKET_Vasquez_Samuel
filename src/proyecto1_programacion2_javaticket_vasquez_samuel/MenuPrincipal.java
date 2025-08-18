@@ -21,6 +21,7 @@ public class MenuPrincipal extends JFrame {
     private JButton crearE;
     private JButton cerrarLog;
     private JButton verEvent;
+    private JButton repors = new JButton("Reportes");;
 
     public MenuPrincipal() {
         initComp();
@@ -100,17 +101,21 @@ public class MenuPrincipal extends JFrame {
                 new VerEvento().setVisible(true);
                 
                 });
-                if(uMan.getUserActual() instanceof Limitado){
-                JButton repors = new JButton("Reportes");
-     
+               
                 repors.setBackground(new Color(0xEBC926));
                 repors.setFont(new Font("Serif", Font.BOLD, 18));
                 repors.setBorder(botBor);
-                repors.setBounds(300, 250, 200, 40);
-                add(repors);
-                }
+                repors.setBounds(300, 300, 200, 40);
+                add(repors); 
                 
-                       
+                
+                repors.addActionListener(e -> {
+                    this.dispose();
+                    Reportes aUser = new Reportes();
+                    aUser.setVisible(true);
+                });
+                
+                
                 
                 
             if (uMan.getUserActual() instanceof Admin) {
@@ -130,15 +135,13 @@ public class MenuPrincipal extends JFrame {
             }
             if(!(uMan.getUserActual() instanceof Limitado)){
                 JButton adminEventPan = new JButton("Event Manage");
-                JButton repors = new JButton("Reportes");
+               
                 
                 adminEventPan.setBackground(new Color(0xEBC926));
                 adminEventPan.setFont(new Font("Serif", Font.BOLD, 18));
                 adminEventPan.setBorder(botBor);
                 
-                repors.setBackground(new Color(0xEBC926));
-                repors.setFont(new Font("Serif", Font.BOLD, 18));
-                repors.setBorder(botBor);
+              
 
                 if(uMan.getUserActual() instanceof Admin){
                     adminEventPan.setBounds(300, 250, 200, 40);
@@ -156,15 +159,10 @@ public class MenuPrincipal extends JFrame {
                     aUser.setVisible(true);
                 });
                 
-                repors.addActionListener(e -> {
-                    this.dispose();
-                    Reportes aUser = new Reportes();
-                    aUser.setVisible(true);
-                });
-                
-                add(repors);   
+                  
                 add(adminEventPan);   
             }else{
+                
                 verEvent.setBounds(300, 250, 200, 40);
             }
         }
